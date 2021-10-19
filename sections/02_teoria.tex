@@ -1,0 +1,121 @@
+\chapter{Studio del problema}
+\label{sec:teoria}
+
+Una camera è un dispositivo che cattura la luce su un sensore in modo da creare una rappresentazione del mondo reale che chiamiamo immagine.
+Possiamo ragionevolmente considerare la luce come dei raggi perfettamente lineari che si muovono a velocità infinita, e possiamo immaginare il sensore come una porzione di un piano bidimensionale.
+Ignoriamo in questa tesi le distorsioni causate dalla lente della camera, usata per focalizzare la luce sul sensore, e modelliamo la nostra camera ideale come una \emph{camera oscura}, immaginando quindi una "scatola" che racchiude all'interno il sensore.
+Questa scatola presenta una singola apertura puntiforme attraverso il quale permettiamo il passaggio della luce.
+Con tale configurazione in ogni punto del sensore cade uno e un solo raggio di luce (figura \ref{fig:camera oscura}).
+\begin{figure}
+    \caption{Camera oscura}
+    \label{fig:camera oscura}
+    \centering
+    \includegraphics[width=.8\textwidth]{images/camera oscura.pdf} 
+\end{figure}
+
+
+Utilizziamo quindi un ulteriore astrazione, in cui poniamo il sensore al di fuori della camera, mantenendo però la condizione in cui il raggio di luce deve passare per l'apertura per essere catturato nell'immagine (figura \ref{fig:camera model}).
+È facilmente verificabile che l'immagine così ottenuta sia uguale all'immagine precedente ma invertita, e quindi coerente con la realtà.
+\begin{figure}
+    \caption{Camera astratta}
+    \label{fig:camera model}
+    \centering
+    \includegraphics[width=.8\textwidth]{images/camera astratta.pdf} 
+\end{figure}
+
+Con il problema così definito abbiamo ridotto l'acquisizione dell'immagine ad una proiezione dallo spazio tridimensionale ad uno spazio bidimensionale .
+Notiamo che ciò che a noi interessa non è però la proiezione dal mondo all'immagine ma l'operazione inversa, e che quindi le nostre incognite sono le coordinate reali (originali) degli oggetti rappresentati nell'immagine.
+Possiamo quindi assegnare delle coordinate ai vari elementi e studiare come tale proiezione si comporta (figura \ref{fig:camera coords}).
+\begin{figure}
+    \caption{Modello con coordinate}
+    \label{fig:camera coords}
+    \centering
+    \includegraphics[width=.85\textwidth]{images/camera coords.pdf}
+\end{figure}
+
+\begin{center}
+    \hrulefill
+
+    ...TODO...
+
+    \hrulefill
+\end{center}
+
+Risolvendo il sistema troviamo le equazioni in \ref{eq:cartesian}.
+\begin{equation}
+    \label{eq:cartesian}
+    \begin{split}
+        x & = \left( \frac{cf - d}{ax' + by' + cf} \right) x'\\
+        y & = \left( \frac{cf - d}{ax' + by' + cf} \right) y'\\
+        z & = \left( \frac{cf - d}{ax' + by' + cf} - 1 \right) f  \\
+    \end{split}
+\end{equation}
+Le equazioni così trovate non sono lineari.
+Possiamo però definire una nuova coordinata $\lambda$ e trasformare le equazioni in \ref{eq:cartesian} nelle equazioni in \ref{eq:homogeneous}.
+\begin{equation}
+    \label{eq:homogeneous}
+    \begin{split}
+        \lambda x & = (cf - d) x' \\
+        \lambda y & = (cf - d) y' \\
+        \lambda z & = -fax' - fby' - fd \\
+        \lambda  & = ax' + by' + cf\\
+    \end{split}
+\end{equation}
+
+Le coordinate $[\lambda x, \lambda y, \lambda z, \lambda]^T$ sono chiamate \emph{coordinate proiettive omogenee}.
+La forma normale $N$ di un vettore $V$ definito in \emph{coordinate proiettive omogenee} si ottiene attraverso la formula $N = \displaystyle\frac{V}{\lambda_V}$.
+$N$ è quindi della forma $N = [x, y, z, 1]^T$.
+È perciò semplice la conversione da \emph{coordinate cartesiane} a \emph{coordinate proiettive} e viceversa.
+Possiamo definire le equazioni trovate come trasformazione lineare in coordinate proiettive.
+La matrice relativa a questa trasformazione è in \ref{eq:projmat}.
+\begin{equation}
+    \label{eq:projmat}
+    J_{(f, [a, b, c, d])} =
+    \begin{bmatrix}
+        cf - d & 0      & 0   \\
+        0      & cf - d & 0   \\
+        -fa    & -fb    & -fd \\
+        a      & b      & cf  \\
+    \end{bmatrix}
+\end{equation}
+Questo sistema di coordinate è lo stesso utilizzato per applicare le classiche trasformazioni lineari di traslazione, rotazione, scala e shear.
+Tutte queste trasformazioni rimangono quindi applicabili anche dopo il cambio di coordinate e possono essere combinate con la trasformazione di proiezione $J$ trovata.
+
+Riassumiamo i passaggi da compiere in modo da comporre la trasformazione $M$ completa:
+\begin{enumerate}
+    \item Cambiare coordinate da $R^2$ omogeneo in $R^3$ omogeneo, settando $z=0$.
+    \item Scalare l'immagine, rendendo $h = 1, w = w_0/h_0$.
+    \item Riflettere l'asse Y dell'immagine, in modo che incrementi muovendosi verso l'alto.
+    \item Traslare l'origine dell'immagine al centro di questa.
+    \item Proiettare l'immagine sul piano $G$, calcolando e applicando $J$.
+    \item Applicare l'inversa della trasformazione dell'immagine, così da avere $z=0$ per tutti i punti ottenuti.
+    \item Rimuovere la coordinata $z$, così da tornare in $R^2$ omogeneo.
+\end{enumerate}
+Per calcolare il piano $G$, necessario per calcolare $J_{(f, G)}$, si deve:
+\begin{enumerate}
+    \item Applicare al piano $[0, 0, 1, 0]$, che è il piano in cui $z=0$, l'inversa della rotazione dell'immagine.
+    \item Calcolare l'origine del piano $O$, applicando l'inversa della trasformazione dell'immagine al punto $[0, 0, 0, 1]$.
+    \item Applicare al piano la traslazione per piani che porta l'origine nel punto calcolato in precedenza.
+\end{enumerate}
+Quindi abbiamo, indicando come $I$ la trasformazione completa dell'immagine, $I_R, I_T$ rispettivamente rotazione e traslazione dell'immagine, $T_{(x, y, z)}$ la traslazione che porta $[0, 0, 0, 1]$ in $[x, y, z, 1]$, $S_{(x, y, z)}$ la scala che porta $[1, 1, 1, 1]$ in $[x, y, z, 1]$:
+\begin{equation}
+    M =
+    \begin{bmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 0 & 1 \\
+    \end{bmatrix}
+    \cdot I^{-1} \cdot J_{(f, G)} \cdot T_{(0.5, w/2h)} \cdot S_{(1, -1, 1)} \cdot S_{(h, h, 1)}^{-1} \cdot
+    \begin{bmatrix}
+        1 & 0 & 0 \\
+        0 & 1 & 0 \\
+        0 & 0 & 0 \\
+        0 & 0 & 1 \\
+    \end{bmatrix}
+\end{equation}
+\begin{equation}
+    G = T_{(O)}^{-1T} \cdot I_R^{-1} \cdot [0, 0, 1, 0]
+    \text{ dove }
+    O = I^{-1} \cdot [0, 0, 0, 1]
+\end{equation}
+Si può verificare che $M$ è una matrice $3 \times 3$.

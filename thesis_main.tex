@@ -1,0 +1,62 @@
+\documentclass[12pt,a4paper,italian,twoside, openany]{book}
+
+% Set up data, if you need to add a package, go here
+\input{setup/packages.tex}
+
+% macro
+\newcommand{\matchNews}[1]{\emph{$news\_match$}\textsubscript{\texttt{\lowercase{#1}}}}
+\newcommand{\matchRatio}[1]{\emph{$match\_ratio_{#1}$}}
+
+\begin{document}
+
+\input{frontspiece}
+
+% ----------------------------- ABSTRACT ------------------------------------
+\setlength{\parskip}{\bigskipamount}
+\renewcommand{\baselinestretch}{1.4}\normalsize
+\input{sections/0_abstract}
+
+% ------------------------------- INDICE ---------------------------------------
+\renewcommand{\baselinestretch}{1}\normalsize
+
+
+\frontmatter 						% numerazione romana
+\tableofcontents
+
+\pagestyle{plain}
+%\makeheadrule{headings}{\textwidth}{0.3pt}
+
+\renewcommand{\baselinestretch}{1.4}\normalsize
+
+\mainmatter
+\input{sections/01_introduzione}
+\input{sections/02_teoria}
+\input{sections/03_funzionalita}
+\input{sections/04_implementazione}
+\input{sections/05_testing}
+\input{sections/06_conclusioni}
+
+\pagestyle{empty}
+
+\chapter*{Ringraziamenti}
+Ringrazio Salvatore, Silvio e Sebastian che mi hanno fatto trovare questo template pronto.
+
+
+\addcontentsline{toc}{chapter}{Ringraziamenti}%
+
+\bibliographystyle{splncs04}
+\bibliography{bibliography}
+
+\nocite{*}
+
+
+
+% ----------------- ELENCO DELLE FIGURE/TABELLE ------------------------
+\cleardoublepage
+\listoffigures
+\listoftables
+
+\cleardoublepage
+
+
+\end{document}
