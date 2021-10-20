@@ -1,10 +1,56 @@
 \chapter{Architettura e implementazione}
 \label{sec:implementazione}
 
-Definire e desccrivere nei dettagli l'architettura a blocchi, descrivendo ciascun blocco e i collegamenti.
-Non è ancora necessario dare dettagli implementativi, che andranno nel capitolo dedicato.
+\textbf{DA RIVEDERE}
+% TODO: AGGIUNGI IMMAGINI, REFERENZE E I NOMI CORRETTI, E RISCRIVI
 
-Descrizione tecnologie utilizzate per implementare ciascun blocco.
+% Definire e desccrivere nei dettagli l'architettura a blocchi, descrivendo ciascun blocco e i collegamenti.
+% Non è ancora necessario dare dettagli implementativi, che andranno nel capitolo dedicato.
+% Descrizione tecnologie utilizzate per implementare ciascun blocco.
+% Qui vanno i dettagli implementativi per ciascun blocco dell'architettura definita nel capitolo precedente.
+% Potrebbe convenire replicare l'immagine dell'architettura, definendo all'interno dell'immagine dettagli implementativi come ad esempio i nomi dei moduli utilizzati e le tecnologie utilizzate per implementarli.
 
-Qui vanno i dettagli implementativi per ciascun blocco dell'architettura definita nel capitolo precedente.
-Potrebbe convenire replicare l'immagine dell'architettura, definendo all'interno dell'immagine dettagli implementativi come ad esempio i nomi dei moduli utilizzati e le tecnologie utilizzate per implementarli.
+\section{Sistema di rilevazione anomalie}
+Il sistema di rilevazione anomalie, in cui il modulo di correzione è implementato, è costituito dai moduli in figura \ref{fig:sys modules}.
+\begin{figure}
+    \caption{Architettura del sistema di rilevazione anomalie}
+    \label{fig:sys modules}
+    \centering
+    \includegraphics[width=.66\textwidth]{images/placeholder.png}
+\end{figure}
+Il sistema è implementato sul dispositivo Nvidia Jetson xxxxxxx ed è sviluppato su Ubuntu 18.04.
+Il linguaggio di sviluppo è Python3.6.
+Il modulo di acquisizione e classificazione è realizzato utilizzando l'SDK Nvidia Deepstream.
+La pipeline di acquisizione è gestita da GStreamer.
+La classificazione è effettuata dal modulo di inferenza implementato dall'SDK Deepstream all'interno della pipeline.
+Questo modulo di inferenza è configurato per utilizzare il modello di CNN YoloV4.
+
+Per la gestione delle operazione di algebra lineare sono stati utilizzati i package numpy e scipy.
+Le classi utilizzate dal sistema per la gestione dei dati (es. Vector, Circle, Shape) sono realizzate come sottoclassi di numpy.ndarray.
+
+Il modulo di correzione si occupa della rimozione di duplicati ed occlusioni e della correzione della distorsione prospettica descritta in questa tesi.
+
+Il modulo di tracking effettua il tracciamento delle entità, utilizzando una funzione di smoothing per ridurre le imprecisioni della classificazione.
+Il tracking è effettuato sia utilizzando l'ultima posizione conosciuta, sia la posizione predetta in base a velocità e accelerazione.
+
+Il modulo di rilevazione di anomalie si occupa di posizionare le entità all'interno della mappa stradale preconfigurata da un operatore, di assegnarvi una forma approssimata e di comunicare con i sottomoduli di rilevazione di anomalie.
+
+I dati relativi alla mappa sono gestiti attraverso coordinate baricentriche e sono utilizzati per Cambio di corsia, Sosta vietata, Persona in strada, Invasione di area.
+
+Il traffico congestionato utilizza algoritmi di clustering forniti da scipy.
+
+Gli urti sono verificati implementando GJK e applicandolo alla posizione predetta delle forme calcolate in precedenza dopo un intervallo di tempo.
+
+Il modulo di comunicazione ottiene i dati relativi alle anomalie e lo stream video e si occupa di salvare segmenti di video in cui sono presenti una o più anomalie.
+I dati relativi alle anomalie e il percorso del video sono inviati tramite richiesta http al microservizio, implementato nello stesso dispositivo, che gestisce la comunicazione col backend principale.
+Il modulo di comunicazione utilizza OpenCV per il salvataggio del video e Requests per la comunicazione http.
+
+Il microservizio è implementato con NodeJS, Express, Sequelize e utilizza un DB MySql.
+
+\section{Strumento interattivo}
+Lo strumento interattivo è scritto in TypeScript e utilizza il framework SvelteKit.
+Per le operazioni di algebra lineare è utilizzato MathJS.
+Per implementare il rendering dell'immagine manipolata è stato utilizzato GpuJS, in quanto ha consentito di evitare i costi di tempo richiesti per imparare WebGL.
+Questa libreria non è però abbastanza matura e presenta alcuni comportamenti non ideali, ed è quindi raccomandabile spendere il tempo necessario per imparare WebGL in futuro.
+Tutto il resto delle funzioni è implementato attraverso l'uso di WebAPI e Svelte.
+Il deploy è effettuato come SPA su GitHub Pages.
