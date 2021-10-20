@@ -1,4 +1,41 @@
 \chapter{Funzionalità}
 \label{sec:funzionalita}
 
-Descrivere quali sono le funzionalità del sistema
+% TODO: EW, E METTI IMMAGINI
+
+Il sistema in cui il modulo di correzione è inserito si occupa di individuare, classificare e tracciare le entità presenti nello stream video ricavato dalla camera.
+Con i dati ottenuti effettua poi, attraverso l'utilizzo di euristiche sperimentali, la rilevazione di anomalie.
+Le anomalie trattate sono:
+\begin{itemize}
+    \item Cambio di corsia non permesso
+    \item Traffico congestionato
+    \item Attraversamento pedonale fuori dalle striscie 
+    \item Veicolo al di fuori della strada (es. marciapiede) %ew
+    \item Urto tra veicoli e tra veicolo e pedone
+    \item Sosta non consentita
+\end{itemize}
+La corretta implementazione del modulo di correzione, che è posto come filtro tra la classificazione e il tracciamento delle entità, ha il fine di migliorare i risultati della rilevazione delle anomalie elencate sopra.
+
+Lo strumento di generazione della trasformazione deve permettere la manipolazione di un immagine in modo interattivo.
+Questa manipolazione deve riguardare i parametri:
+\begin{itemize}
+    \item Lunghezza focale $f$
+    \item Altezza dell'immagine $h$
+    \item Rotazione sull'asse $x$
+    \item Rotazione sull'asse $y$
+\end{itemize}
+La rotazione sull'asse $z$ non è solitamente necessaria in situazioni reali e quindi è stata rimossa.
+Inoltre per motivi di UX sono stati aggiunti i controlli di navigazione relativi a \emph{zoom}, \emph{posizione x}, \emph{posizione y}.
+La manipolazione dei parametri relativi a lunghezza focale è possibile utilizzando la rotellina del mouse, quelli relativi alla rotazione con click and drag sull'immagine.
+Tutti i parametri sono modificabili con bottoni e campi testuali.
+Una volta manipolata correttamente l'immagine è possibile salvare la matrice di trasformazione e i parametri configurati.
+%EW
+La manipolazione è corretta quando l'operatore umano ritiene che questa sia corretta. Lo strumento è sviluppato sulla base dell'ipotesi che l'operatore umano sia in grado di riconoscere una manipolazione corretta, in quanto questa assomiglia a una vista dall'alto, in cui le linee parallele e perpendicolari nella realtà appaiono parallele e perpendicolari. Tali linee sono comuni nell'ambito stradale.
+
+%EW
+%EW
+%EW
+Per migliorare i risultati è stato fornito un pulsante di toggle tra l'immagine manipolata e l'immagine originale, e una modalità di misurazione, in cui è possibile inserire segmenti che vengono trasformati insieme all'immagine e che indicano sempre la loro dimensione dopo la trasformazione.
+
+%EW EW EW EW EW EW EW EW EW EW EW EW EW EW 
+Inoltre l'immagine manipolata mostrata presenta una trasformazione leggermente diversa da quella salvata finale in modo da rendere la manipolazione più semplice ed intuitiva.
