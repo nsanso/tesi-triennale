@@ -2,41 +2,45 @@
 \label{sec:teoria}
 
 %rivedere tutto il paragrafo
-Una camera è un dispositivo che cattura la luce su un sensore in modo da creare una rappresentazione del mondo reale che chiamiamo immagine.
-Possiamo ragionevolmente considerare la luce come dei raggi perfettamente lineari che si muovono a velocità infinita, e possiamo immaginare il sensore come una porzione di un piano bidimensionale.
-Ignoriamo in questa tesi le distorsioni causate dalla lente della camera, usata per focalizzare la luce sul sensore, e modelliamo la nostra camera ideale come una \emph{camera oscura}, immaginando quindi una "scatola" che racchiude all'interno il sensore.
-Questa scatola presenta una singola apertura puntiforme attraverso il quale permettiamo il passaggio della luce.
-Con tale configurazione in ogni punto del sensore cade uno e un solo raggio di luce (figura \ref{fig:camera oscura}).
+Un'immagine è una rappresentazione dello spazio reale generata da una camera.
+La camera genera l'immagine utilizzando un sensore per ``catturare'' la luce proveniente dallo spazio reale. 
+Possiamo ragionevolmente considerare la luce come dei raggi perfettamente lineari che si muovono a velocità infinita, e possiamo immaginare il sensore come la porzione di un piano bidimensionale in cui ogni punto cattura un raggio di luce.
+Modelliamo in questa tesi la nostra camera come una \emph{camera oscura} (figura \ref{fig:camera oscura}).
+Una \emph{camera oscura} è composta da una ``scatola'' con una singola apertura puntiforme attraverso il quale può passare la luce.
+Il sensore è posto all'interno di tale ``scatola''.
+Questo ci permette di ignorare le distorsioni causate dalla lente della camera.
 \begin{figure}
     \caption{Camera oscura}
     \label{fig:camera oscura}
     \centering
-    \includegraphics[width=.8\textwidth]{images/camera oscura.pdf}
+    \includegraphics[width=\textwidth]{images/camera oscura.pdf}
 \end{figure}
 
-%rivedere tutto il paragrafo
-Utilizziamo quindi un ulteriore astrazione, in cui poniamo il sensore al di fuori della camera, mantenendo però la condizione in cui il raggio di luce deve passare per l'apertura per essere catturato nell'immagine (figura \ref{fig:camera model}).
-È facilmente verificabile che l'immagine così ottenuta sia uguale all'immagine precedente ma invertita, e quindi coerente con la realtà.
-%delete next line
+Con questa configurazione l'immagine risulta ribaltata rispetto al mondo esterno.
+Utilizziamo quindi un ulteriore astrazione, in cui poniamo il sensore al di fuori della camera, mantenendo però la condizione in cui la luce deve passare per l'apertura puntiforme per essere catturato nell'immagine (figura \ref{fig:camera model}).
+È facilmente verificabile che l'immagine così ottenuta sia uguale all'immagine precedente ma riflessa, e quindi sia coerente con la realtà.
 \begin{figure}
-    \caption{Camera astratta}
+    \caption{Sensore esterno alla camera}
     \label{fig:camera model}
     \centering
-    \includegraphics[width=.8\textwidth]{images/camera astratta.pdf}
+    \includegraphics[width=\textwidth]{images/camera astratta.pdf}
 \end{figure}
 
-%rivedere tutto il paragrafo
-Con il problema così definito abbiamo ridotto l'acquisizione dell'immagine ad una proiezione dallo spazio tridimensionale ad uno spazio bidimensionale .
-Notiamo che ciò che a noi interessa non è però la proiezione dal mondo all'immagine ma l'operazione inversa, e che quindi le nostre incognite sono le coordinate reali (originali) degli oggetti rappresentati nell'immagine.
-Possiamo quindi assegnare delle coordinate ai vari elementi e studiare come tale proiezione si comporta (figura \ref{fig:camera coords}).
+Ciò a cui siamo interessati non è però generare l'immagine, ma conoscere la configurazione dello spazio reale con cui l'immagine è stata generata.
+Dato che l'immagine è generata da raggi di luce che si muovono in linea retta possiamo affermare che ad ogni punto $P'$ dell'immagine corrisponde un punto $P$ nello spazio reale e che questo punto si trova sulla linea che passa per la camera e $P'$.
+Questo non è abbastanza per individuare $P$, in quanto una linea contiene infiniti punti.
+Possiamo risolvere questo problema conoscendo il contesto che stiamo provando a correggere.
+Dato che questo contesto è il contesto stradale, possiamo supporre che le entità a cui siamo interessati siano poggiate sulla strada, che approssimiamo con un piano bidimensionale.
+Il punto $P$ è quindi compreso nel raggio di luce e nel piano stradale.
+Assegnamo delle coordinate ai vari elementi per calcolare la trasformazione (figura \ref{fig:camera coords}).
 \begin{figure}
     \caption{Modello con coordinate}
     \label{fig:camera coords}
     \centering
-    \includegraphics[width=.85\textwidth]{images/camera coords.pdf}
+    \includegraphics[width=\textwidth]{images/camera coords.pdf}
 \end{figure}
 
-Possiamo ricavare il punto $P$ trovando l'intersezione tra il piano $G$ e la linea $\overline{CP}$.
+Possiamo ricavare il punto $P$ trovando l'intersezione tra il piano $G$ e la linea $\overline{CP'}$.
 In $R^3$ una linea è identificata da un sistema di 2 equazioni.
 Il punto $P$ è quindi definito dal sistema di 3 equazioni in \ref{eq:system}.
 \begin{equation}
@@ -76,7 +80,7 @@ Le coordinate $[\lambda x, \lambda y, \lambda z, \lambda]^T$ sono chiamate \emph
 La forma normale $N$ di un vettore $V$ definito in \emph{coordinate proiettive omogenee} si ottiene attraverso la formula $N = \displaystyle\frac{V}{\lambda_V}$.
 $N$ è quindi della forma $N = [x, y, z, 1]^T$.
 È perciò semplice la conversione da \emph{coordinate cartesiane} a \emph{coordinate proiettive} e viceversa.
-Possiamo definire le equazioni trovate come trasformazione lineare in coordinate proiettive.
+Possiamo quindi definire le equazioni trovate come trasformazione lineare in coordinate proiettive.
 La matrice relativa a questa trasformazione è in \ref{eq:projmat}.
 \begin{equation}
     \label{eq:projmat}
@@ -94,7 +98,7 @@ Tutte queste trasformazioni rimangono quindi applicabili anche dopo il cambio di
 Riassumiamo i passaggi da compiere in modo da comporre la trasformazione $M$ completa:
 \begin{enumerate}
     \item Cambiare coordinate da $R^2$ omogeneo in $R^3$ omogeneo, settando $z=0$.
-    \item Scalare l'immagine, rendendo $h = 1, w = w_0/h_0$.
+    \item Scalare l'immagine, rendendo $h = 1, w = w/h$.
     \item Riflettere l'asse Y dell'immagine, in modo che incrementi muovendosi verso l'alto.
     \item Traslare l'origine dell'immagine al centro di questa.
     \item Proiettare l'immagine sul piano $G$, calcolando e applicando $J$.
@@ -105,7 +109,7 @@ Per calcolare il piano $G$, necessario per calcolare $J_{(f, G)}$, si deve:
 \begin{enumerate}
     \item Applicare al piano $[0, 0, 1, 0]$, che è il piano in cui $z=0$, l'inversa della rotazione dell'immagine.
     \item Calcolare l'origine del piano $O$, applicando l'inversa della trasformazione dell'immagine al punto $[0, 0, 0, 1]$.
-    \item Applicare al piano la traslazione per piani che porta l'origine nel punto calcolato in precedenza. % non chiaro
+    \item Applicare al piano la traslazione per piani che porta l'origine nel punto calcolato in precedenza. Questa traslazione per piani è uguale alla trasposta dell'inversa della traslazione per punti.
 \end{enumerate}
 Quindi abbiamo, indicando come $I$ la trasformazione completa dell'immagine, $I_R, I_T$ rispettivamente rotazione e traslazione dell'immagine, $T_{(x, y, z)}$ la traslazione che porta $[0, 0, 0, 1]$ in $[x, y, z, 1]$, $S_{(x, y, z)}$ la scala che porta $[1, 1, 1, 1]$ in $[x, y, z, 1]$:
 \begin{equation}
@@ -118,7 +122,7 @@ Quindi abbiamo, indicando come $I$ la trasformazione completa dell'immagine, $I_
             0 & 1 & 0 & 0 \\
             0 & 0 & 0 & 1 \\
         \end{bsmallmatrix}
-        \cdot I^{-1} \cdot J_{(f, G)} \cdot T_{(0.5, w_0/2h_0)} \cdot S_{(1/h_0, -1/h_0, 1)} \cdot
+        \cdot I^{-1} \cdot J_{(f, G)} \cdot T_{(0.5, w/2h)} \cdot S_{(1/h, -1/h, 1)} \cdot
         \begin{bsmallmatrix}
             1 & 0 & 0 \\
             0 & 1 & 0 \\
