@@ -1,8 +1,15 @@
 \chapter{Funzionalità}
 \label{sec:funzionalita}
 
-% TODO: METTI IMMAGINI
 \section{Modulo di correzione}
+
+\begin{figure}
+    \caption{Sistema di rilevazione di anomalie in funzione}
+    \label{fig:anomalie}
+    \centering
+    \includegraphics[width=\textwidth]{images/algo.png}
+\end{figure}
+
 Il sistema in cui il modulo di correzione è inserito si occupa di individuare, classificare e tracciare le entità presenti nello stream video ricavato dalla camera.
 Con i dati ottenuti effettua poi, attraverso l'utilizzo di euristiche sperimentali, la rilevazione di anomalie.
 Le anomalie trattate sono:
@@ -17,14 +24,22 @@ Le anomalie trattate sono:
 \end{itemize}
 La corretta implementazione del modulo di correzione, che è posto come filtro tra la classificazione e il tracciamento delle entità, ha il fine di migliorare i risultati della rilevazione delle anomalie elencate sopra.
 
+\section{Strumento interattivo}
+
 \begin{figure}
-    \caption{Sistema di rilevazione di anomalie in funzione}
-    \label{fig:anomalie}
+    \caption{Stumento interattivo: interfaccia}
+    \label{fig:tool view}
     \centering
-    \includegraphics[width=.66\textwidth]{images/placeholder.png}
+    \includegraphics[height=.44\textheight]{images/tool orig.png}
 \end{figure}
 
-\section{Strumento interattivo}
+\begin{figure}
+    \caption{Stumento interattivo: modalità di misurazione}
+    \label{fig:tool measure}
+    \centering
+    \includegraphics[height=.44\textheight]{images/tool measure.png}
+\end{figure}
+
 Lo strumento interattivo è sviluppato sulla base dell'ipotesi che l'operatore umano sia in grado di riconoscere un'immagine in cui non è presente la \emph{distorsione prospettica}, in quanto questa assomiglia a una ``vista dall'alto'', in cui le linee parallele e perpendicolari nella realtà appaiono parallele e perpendicolari. 
 Linee disposte in questo modo sono comuni nell'ambito stradale.
 Lo strumento fornisce quindi la possibilità di manipolare i parametri di \emph{lunghezza focale}, \emph{distanza tra piano e immagine (altezza)}, \emph{rotazione sull'asse x}, \emph{rotazione sull'asse y}.
@@ -48,17 +63,3 @@ Anche questa è traslata per mantenere il punto centrale dell'immagine originale
 Per migliorare i risultati è stato fornito un bottone che permette di visualizzare l'immagine originale.
 È stata aggiunta anche una modalità di misurazione che permette di inserire segmenti che indicano la loro dimensione dopo la trasformazione.
 Questi segmenti vengono manipolati visivamente insieme all'immagine ma le misure sono relative alla trasformazione che verrà poi salvata.
-
-\begin{figure}
-    \caption{Stumento interattivo: interfaccia}
-    \label{fig:tool view}
-    \centering
-    \includegraphics[width=.66\textwidth]{images/placeholder.png}
-\end{figure}
-
-\begin{figure}
-    \caption{Stumento interattivo: modalità di misurazione}
-    \label{fig:tool measure}
-    \centering
-    \includegraphics[width=.66\textwidth]{images/placeholder.png}
-\end{figure}
