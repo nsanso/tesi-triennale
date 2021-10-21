@@ -17,6 +17,13 @@ Le anomalie trattate sono:
 \end{itemize}
 La corretta implementazione del modulo di correzione, che è posto come filtro tra la classificazione e il tracciamento delle entità, ha il fine di migliorare i risultati della rilevazione delle anomalie elencate sopra.
 
+\begin{figure}
+    \caption{Sistema di rilevazione di anomalie in funzione}
+    \label{fig:anomalie}
+    \centering
+    \includegraphics[width=.66\textwidth]{images/placeholder.png}
+\end{figure}
+
 \section{Strumento interattivo}
 Lo strumento interattivo è sviluppato sulla base dell'ipotesi che l'operatore umano sia in grado di riconoscere un'immagine in cui non è presente la \emph{distorsione prospettica}, in quanto questa assomiglia a una ``vista dall'alto'', in cui le linee parallele e perpendicolari nella realtà appaiono parallele e perpendicolari. 
 Linee disposte in questo modo sono comuni nell'ambito stradale.
@@ -26,10 +33,10 @@ La \emph{rotazione sull'asse z} è raramente necessaria in situazioni reali e no
 
 Lo strumento mostra una porzione dell'immagine dopo che la trasformazione è stata applicata.
 L'operatore è quindi in grado di valutare la bontà della trasformazione visivamente.
-Dato che la trasformazione non mantiene forma e dimensioni dell'immagine non è possibile applicare l'immagine e poi mostrarla.
+Dato che la trasformazione non mantiene forma e dimensioni dell'immagine non è possibile applicare la trasformazione all'immagine e poi mostrarla.
 Lo strumento quindi parte dalle coordinate dell'immagine già manipolata e per ogni pixel applica la trasformazione inversa.
 Con le coordinate trovate va a copiare il pixel dell'immagine originale nella posizione trovata.
-La trasformazione utilizzata per la manipolazione ha inoltre delle modifiche rispetto a quella indicata nel capitolo \ref{sec:teoria}: l'altezza è utilizzata ed è fissata a 1 e la trasformazione viene traslata in modo da mantenere il punto centrale dell'immagine nella stessa posizione prima e dopo la trasformazione.
+La trasformazione utilizzata per la manipolazione ha inoltre delle modifiche rispetto a quella indicata nel capitolo \ref{sec:teoria}: l'altezza utilizzata è fissata a 0 e la trasformazione viene traslata in modo da mantenere il punto centrale dell'immagine nella stessa posizione prima e dopo la trasformazione.
 Senza queste modifiche la manipolazione dell'immagine risulta disorientante e difficile.
 
 Sono presenti i controlli di navigazione relativi a \emph{zoom}, \emph{posizione x}, \emph{posizione y}.
@@ -41,3 +48,17 @@ Anche questa è traslata per mantenere il punto centrale dell'immagine originale
 Per migliorare i risultati è stato fornito un bottone che permette di visualizzare l'immagine originale.
 È stata aggiunta anche una modalità di misurazione che permette di inserire segmenti che indicano la loro dimensione dopo la trasformazione.
 Questi segmenti vengono manipolati visivamente insieme all'immagine ma le misure sono relative alla trasformazione che verrà poi salvata.
+
+\begin{figure}
+    \caption{Stumento interattivo: interfaccia}
+    \label{fig:tool view}
+    \centering
+    \includegraphics[width=.66\textwidth]{images/placeholder.png}
+\end{figure}
+
+\begin{figure}
+    \caption{Stumento interattivo: modalità di misurazione}
+    \label{fig:tool measure}
+    \centering
+    \includegraphics[width=.66\textwidth]{images/placeholder.png}
+\end{figure}
