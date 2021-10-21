@@ -15,13 +15,13 @@ Il sistema di rilevazione anomalie, in cui il modulo di correzione è implementa
     \caption{Architettura del sistema di rilevazione anomalie}
     \label{fig:sys modules}
     \centering
-    \includegraphics[width=.66\textwidth]{images/placeholder.png}
+    \includegraphics[width=\textwidth]{images/arch.pdf}
 \end{figure}
-Il sistema è implementato sul dispositivo \emph{NVidia Jetson Xaxier}\cite{arch:jetson} ed è sviluppato su \emph{Ubuntu 18.04}\cite{arch:ubuntu}.
+Il sistema è implementato sul dispositivo \emph{Nvidia Jetson Xaxier}\cite{arch:jetson} ed è sviluppato su \emph{Ubuntu 18.04}\cite{arch:ubuntu}.
 Il linguaggio di sviluppo è \emph{Python 3.6}\cite{arch:python}.
 Per la gestione delle operazione di algebra lineare sono stati utilizzati i package \emph{Numpy}\cite{arch:numpy} e \emph{SciPy}\cite{arch:scipy}.
 La pipeline di acquisizione è gestita dalla libreria \emph{GStreamer}\cite{arch:gstreamer}.
-La classificazione è effettuata dal modulo di inferenza fornito dall'\emph{SDK NVidia Deepstream}\cite{arch:deepstream}.
+La classificazione è effettuata dal modulo di inferenza fornito dall'\emph{SDK Nvidia Deepstream}\cite{arch:deepstream}.
 Questo modulo di inferenza è configurato per il modello di \emph{Object Detection YoloV4}\cite{arch:yolo}.
 
 Il modulo di correzione si occupa della rimozione di duplicati ed occlusioni e della correzione della distorsione prospettica descritta in questa tesi.
@@ -36,7 +36,7 @@ Gli \emph{Urti} sono verificati simulando la posizione futura delle entità e ce
 Il modulo di comunicazione ottiene i dati relativi alle anomalie e lo stream video e si occupa di salvare segmenti di video in cui sono presenti una o più anomalie.
 I dati relativi alle anomalie e il percorso del video sono inviati tramite richiesta HTTP al \emph{Microservizio}, implementato nello stesso dispositivo, che gestisce la comunicazione col backend principale.
 Il modulo di comunicazione utilizza \emph{OpenCV}\cite{arch:opencv} per il salvataggio del video e \emph{Requests}\cite{arch:requests} per la comunicazione HTTP.
-Il \emph{Microservizio} è implementato con \emph{NodeJS}\cite{arch:nodejs}, \emph{Express}\cite{arch:express}, \emph{Sequelize}\cite{arch:sequelize} e utilizza un database \emph{MariaDB}\cite{arch:mariadb}.
+Il \emph{Microservizio} è implementato con \emph{NodeJS}\cite{arch:nodejs}, \emph{Express}\cite{arch:express}, \emph{Sequelize}\cite{arch:sequelize} e utilizza un database \emph{MySQL}\cite{arch:mysql}.
 
 \section{Strumento interattivo}
 Lo strumento interattivo è scritto in \emph{TypeScript}\cite{arch:typescript} e utilizza il framework \emph{SvelteKit}\cite{arch:sveltekit}.
