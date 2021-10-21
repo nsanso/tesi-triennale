@@ -1,13 +1,12 @@
 \chapter{Funzionalità}
 \label{sec:funzionalita}
 
-\textbf{DA RIVEDERE}
-
-% TODO: EW, E METTI IMMAGINI
+% TODO: METTI IMMAGINI
 \section{Modulo di correzione}
 Il sistema in cui il modulo di correzione è inserito si occupa di individuare, classificare e tracciare le entità presenti nello stream video ricavato dalla camera.
 Con i dati ottenuti effettua poi, attraverso l'utilizzo di euristiche sperimentali, la rilevazione di anomalie.
 Le anomalie trattate sono:
+% TODO: standardizza
 \begin{itemize}
     \item Cambio di corsia non permesso
     \item Traffico congestionato
@@ -19,26 +18,26 @@ Le anomalie trattate sono:
 La corretta implementazione del modulo di correzione, che è posto come filtro tra la classificazione e il tracciamento delle entità, ha il fine di migliorare i risultati della rilevazione delle anomalie elencate sopra.
 
 \section{Strumento interattivo}
-Lo strumento di generazione della trasformazione deve permettere la manipolazione di un immagine in modo interattivo.
-Questa manipolazione deve riguardare i parametri:
-\begin{itemize}
-    \item Lunghezza focale $f$
-    \item Altezza dell'immagine $h$
-    \item Rotazione sull'asse $x$
-    \item Rotazione sull'asse $y$
-\end{itemize}
-La rotazione sull'asse $z$ non è solitamente necessaria in situazioni reali e quindi è stata rimossa.
-Inoltre per motivi di UX sono stati aggiunti i controlli di navigazione relativi a \emph{zoom}, \emph{posizione x}, \emph{posizione y}.
-La manipolazione dei parametri relativi a lunghezza focale è possibile utilizzando la rotellina del mouse, quelli relativi alla rotazione con click and drag sull'immagine.
-Tutti i parametri sono modificabili con bottoni e campi testuali.
+Lo strumento interattivo è sviluppato sulla base dell'ipotesi che l'operatore umano sia in grado di riconoscere un'immagine in cui non è presente la \emph{distorsione prospettica}, in quanto questa assomiglia a una ``vista dall'alto'', in cui le linee parallele e perpendicolari nella realtà appaiono parallele e perpendicolari. 
+Linee disposte in questo modo sono comuni nell'ambito stradale.
+Lo strumento fornisce quindi la possibilità di manipolare i parametri di \emph{lunghezza focale}, \emph{distanza tra piano e immagine (altezza)}, \emph{rotazione sull'asse x}, \emph{rotazione sull'asse y}.
+Il primo è controllato attraverso la \emph{rotellina del mouse}, gli altri due con \emph{click \& drag} sull'immagine.
+La \emph{rotazione sull'asse z} è raramente necessaria in situazioni reali e non è quindi manipolabile.
+
+Lo strumento mostra una porzione dell'immagine dopo che la trasformazione è stata applicata.
+L'operatore è quindi in grado di valutare la bontà della trasformazione visivamente.
+Dato che la trasformazione non mantiene forma e dimensioni dell'immagine non è possibile applicare l'immagine e poi mostrarla.
+Lo strumento quindi parte dalle coordinate dell'immagine già manipolata e per ogni pixel applica la trasformazione inversa.
+Con le coordinate trovate va a copiare il pixel dell'immagine originale nella posizione trovata.
+La trasformazione utilizzata per la manipolazione ha inoltre delle modifiche rispetto a quella indicata nel capitolo \ref{sec:teoria}: l'altezza è utilizzata ed è fissata a 1 e la trasformazione viene traslata in modo da mantenere il punto centrale dell'immagine nella stessa posizione prima e dopo la trasformazione.
+Senza queste modifiche la manipolazione dell'immagine risulta disorientante e difficile.
+
+Sono presenti i controlli di navigazione relativi a \emph{zoom}, \emph{posizione x}, \emph{posizione y}.
+Tutti i parametri, compresi quelli relativi a \emph{lunghezza focale} e \emph{rotazione}, sono modificabili con bottoni e campi testuali.
 Una volta manipolata correttamente l'immagine è possibile salvare la matrice di trasformazione e i parametri configurati.
-%EW
-La manipolazione è corretta quando l'operatore umano ritiene che questa sia corretta. Lo strumento è sviluppato sulla base dell'ipotesi che l'operatore umano sia in grado di riconoscere una manipolazione corretta, in quanto questa assomiglia a una vista dall'alto, in cui le linee parallele e perpendicolari nella realtà appaiono parallele e perpendicolari. Tali linee sono comuni nell'ambito stradale.
+La matrice salvata, a differenza di quella della manipolazione, è generata usando anche \emph{l'altezza}.
+Anche questa è traslata per mantenere il punto centrale dell'immagine originale nella stessa posizione.
 
-%EW
-%EW
-%EW
-Per migliorare i risultati è stato fornito un pulsante di toggle tra l'immagine manipolata e l'immagine originale, e una modalità di misurazione, in cui è possibile inserire segmenti che vengono trasformati insieme all'immagine e che indicano sempre la loro dimensione dopo la trasformazione.
-
-%EW EW EW EW EW EW EW EW EW EW EW EW EW EW 
-Inoltre l'immagine manipolata mostrata presenta una trasformazione leggermente diversa da quella salvata finale in modo da rendere la manipolazione più semplice ed intuitiva.
+Per migliorare i risultati è stato fornito un bottone che permette di visualizzare l'immagine originale.
+È stata aggiunta anche una modalità di misurazione che permette di inserire segmenti che indicano la loro dimensione dopo la trasformazione.
+Questi segmenti vengono manipolati visivamente insieme all'immagine ma le misure sono relative alla trasformazione che verrà poi salvata.

@@ -25,51 +25,26 @@ La velocità può poi essere ricavata applicando un algoritmo di tracciamento ai
 Questi dati sono però in \emph{spazio immagine} e non in \emph{spazio reale}.
 Questi due spazi differiscono in numero di dimensioni, essendo lo \emph{spazio immagine} bidimensionale e lo \emph{spazio reale} tridimensionale.
 Non esiste perciò una trasformazione lineare dall'uno all'altro.
-Utilizzare le misurazioni in \emph{spazio immagine} per la rilevazione di anomalie porta a un sistema fragile e poco affidabile, in quanto le entità che stiamo misurando vivono nello \emph{spazio reale} e non nello spazio in cui sono misurate.
+Utilizzare le misurazioni in \emph{spazio immagine} per la rilevazione di anomalie porta a un sistema fragile e poco affidabile, in quanto tali misurazioni risultano distorte rispetto a i loro valori reali.
 
-È perciò necessario individuare una trasformazione da \emph{spazio immagine} a \emph{spazio reale}. Deve essere possibile arrivare a tale trasformazione senza conoscere i dati reali relativi alla camera e alla superficie inquadrata, in quanto questi non sono sempre disponibili. Inoltre applicare questa trasformazione deve necessariamente essere poco costoso computazionalmente, in modo da mantenere il sistema di rilevazione di anomalie eseguibile in real time.
-
-% Introdurre l'argomento (qui siamo abbastanza sul generale)
-
-% Nota: NON HA SENSO QUI SCRIVERE COSE COME "L'obiettivo di questa tesi
-% e'..."!!
-% Gli obiettivi vanno nella sezione apposita, qui si introduce solamente
-% l'argomento!
-
-% Risponde alla domanda "perchè ha senso questo lavoro?"
-
-% Spesso è utile usare lo schema "problema/opportunità -> soluzione"
-
-% Esempio:
-% Problema/Opportunità: Nonostante l'avanzamento di algo e tecnologie, l'utilizzo della computer vision per automatizzare le diagnosi NON è stato mai sfruttato per le ecografie
-
-% Soluzione: Le reti neurali sono uno strumento che potrebbe fornire nuove soluzioni. La sperimentazione di queste tecnologie potrebbe migliorare lo stato dell'arte.
-
+È perciò necessario individuare una trasformazione da \emph{spazio immagine} a \emph{spazio reale}.
+Deve essere possibile arrivare a tale trasformazione senza conoscere i dati reali relativi alla camera e alla superficie inquadrata, in quanto questi non sono sempre disponibili.
+Inoltre applicare questa trasformazione deve necessariamente essere poco costoso computazionalmente, in modo da mantenere il sistema di rilevazione di anomalie eseguibile in real time.
 
 \section{Obiettivo della tesi}
 \begin{itemize}
 	\item Sviluppare un algoritmo di correzione prospettica applicabile ad un sistema di rilevazione di anomalie nel contesto della sicurezza stradale.
 	\item Sviluppare e implementare un tool interattivo per la generazione di dati relativi alla distorsione prospettica della singola camera.
 \end{itemize}
-% Obiettivo della tesi è ...
-% Esempio: Sperimentare le reti neurali GAN per l'interpretazione di ecografie allo scopo di diagnosticare la malattia xy da ecografie a questa parte del corpo. Bla bla..
 
 \section{Attività della tesi}
 
 \begin{itemize}
 	\item Studio delle trasformazioni di proiezione
 	\item Sviluppo del tool interattivo per la generazione delle informazioni relative alla camera
-	\item Implementazione nel sistema real time di rilevazione anomalie
-	\item Confronto con soluzione precedente
+	\item Implementazione del modulo di correzione nel sistema real time di rilevazione anomalie
+	\item Confronto tra risultati con e senza correzione
 \end{itemize}
-
-% Nota: questo paragrafo e' MOLTO schematico, quasi un elenco.
-
-% ELENCATE LE ATTIVITA' CHE HAI SVOLTO PIU' o MENO
-% 	•	Studio problema
-% 	•	Studio tecnologie bla bla
-% 	•	Progettazione  bla bla
-% 	•	Implementazione e test bla bla
 
 \section{Schema della tesi}
 
@@ -82,20 +57,3 @@ Nel capitolo \ref{sec:implementazione} è descritta brevemente l'architettura de
 Nel capitolo \ref{sec:testing} è descritto il processo di validazione e valutazione della soluzione proposta e i suoi risultati.
 
 Infine nel capitolo \ref{sec:conclusioni} è riassunto il lavoro svolto, sono discussi i risultati ottenuti e sono suggeriti possibili sviluppi e miglioramenti,
-
-% nel cap 2 c'è questo, nel cap 3 c'è quello,
-% ecc.), discorsivo ma sintetico, 1 max 2 frasi per
-% ogni capitolo.
-% Nota: METTERE il numero del capitolo a cui ci si riferisce!!! Quindi,
-% EVITARE di scrivere cose tipo "c'e' un capitolo
-% che parla di questo, un altro che parla di quest'altro, ecc."
-
-% NEL CAPITOLO 1 C'è SCRITTO QUESTO
-% NEL CAPITOLO 2 C'E' SCRITTO QUELLO
-
-
-% Nota: tenere sempre a mente che i punti sopra spiegati costituiscono il
-% capitolo "Introduzione", quindi non ha senso
-% mettere qui dettagli tecnici, descrizione librerie,
-% spiegazione/definizione di sigle/termini/ecc.
-% Tutti questi dettagli verranno trattati negli appositi capitoli successivi.

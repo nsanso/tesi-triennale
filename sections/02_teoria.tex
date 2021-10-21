@@ -6,8 +6,7 @@ Un'immagine è una rappresentazione dello spazio reale generata da una camera.
 La camera genera l'immagine utilizzando un sensore per ``catturare'' la luce proveniente dallo spazio reale. 
 Possiamo ragionevolmente considerare la luce come dei raggi perfettamente lineari che si muovono a velocità infinita, e possiamo immaginare il sensore come la porzione di un piano bidimensionale in cui ogni punto cattura un raggio di luce.
 Modelliamo in questa tesi la nostra camera come una \emph{camera oscura} (figura \ref{fig:camera oscura}).
-Una \emph{camera oscura} è composta da una ``scatola'' con una singola apertura puntiforme attraverso il quale può passare la luce.
-Il sensore è posto all'interno di tale ``scatola''.
+Una \emph{camera oscura} è composta da una ``scatola'' con una singola apertura puntiforme attraverso il quale la luce può passare.
 Questo ci permette di ignorare le distorsioni causate dalla lente della camera.
 \begin{figure}
     \caption{Camera oscura}
@@ -16,7 +15,7 @@ Questo ci permette di ignorare le distorsioni causate dalla lente della camera.
     \includegraphics[width=\textwidth]{images/camera oscura.pdf}
 \end{figure}
 
-Con questa configurazione l'immagine risulta ribaltata rispetto al mondo esterno.
+Con questa configurazione l'immagine risulta riflessa rispetto al mondo esterno.
 Utilizziamo quindi un ulteriore astrazione, in cui poniamo il sensore al di fuori della camera, mantenendo però la condizione in cui la luce deve passare per l'apertura puntiforme per essere catturato nell'immagine (figura \ref{fig:camera model}).
 È facilmente verificabile che l'immagine così ottenuta sia uguale all'immagine precedente ma riflessa, e quindi sia coerente con la realtà.
 \begin{figure}
@@ -31,7 +30,7 @@ Dato che l'immagine è generata da raggi di luce che si muovono in linea retta p
 Questo non è abbastanza per individuare $P$, in quanto una linea contiene infiniti punti.
 Possiamo risolvere questo problema conoscendo il contesto che stiamo provando a correggere.
 Dato che questo contesto è il contesto stradale, possiamo supporre che le entità a cui siamo interessati siano poggiate sulla strada, che approssimiamo con un piano bidimensionale.
-Il punto $P$ è quindi compreso nel raggio di luce e nel piano stradale.
+Il punto $P$ è quindi contenuto sia nel raggio di luce che nel piano stradale.
 Assegnamo delle coordinate ai vari elementi per calcolare la trasformazione (figura \ref{fig:camera coords}).
 \begin{figure}
     \caption{Modello con coordinate}
@@ -109,7 +108,7 @@ Per calcolare il piano $G$, necessario per calcolare $J_{(f, G)}$, si deve:
 \begin{enumerate}
     \item Applicare al piano $[0, 0, 1, 0]$, che è il piano in cui $z=0$, l'inversa della rotazione dell'immagine.
     \item Calcolare l'origine del piano $O$, applicando l'inversa della trasformazione dell'immagine al punto $[0, 0, 0, 1]$.
-    \item Applicare al piano la traslazione per piani che porta l'origine nel punto calcolato in precedenza. Questa traslazione per piani è uguale alla trasposta dell'inversa della traslazione per punti.
+    \item Applicare al piano la ``traslazione per piani'' che porta l'origine nel punto calcolato in precedenza. Questa ``traslazione per piani'' è uguale alla trasposta dell'inversa della traslazione per punti.
 \end{enumerate}
 Quindi abbiamo, indicando come $I$ la trasformazione completa dell'immagine, $I_R, I_T$ rispettivamente rotazione e traslazione dell'immagine, $T_{(x, y, z)}$ la traslazione che porta $[0, 0, 0, 1]$ in $[x, y, z, 1]$, $S_{(x, y, z)}$ la scala che porta $[1, 1, 1, 1]$ in $[x, y, z, 1]$:
 \begin{equation}
@@ -131,3 +130,6 @@ Quindi abbiamo, indicando come $I$ la trasformazione completa dell'immagine, $I_
         \end{bsmallmatrix}                                   \\
     \end{aligned}
 \end{equation}
+La matrice $M$ trovata è una matrice $3x3$.
+È perciò una matrice omografica in $R^2$ omogeneo.
+Il punto $P = M \cdot P'$ deve perciò essere normalizzato e convertito in coordinate cartesiane prima di essere utilizzato dal resto del sistema.
