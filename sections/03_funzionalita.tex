@@ -13,14 +13,13 @@
 Il sistema in cui il modulo di correzione è inserito si occupa di individuare, classificare e tracciare le entità presenti nello stream video ricavato dalla camera.
 Con i dati ottenuti effettua poi, attraverso l'utilizzo di euristiche sperimentali, la rilevazione di anomalie.
 Le anomalie trattate sono:
-% TODO: standardizza
 \begin{itemize}
     \item Cambio di corsia non permesso
+    \item Sosta vietata
+    \item Persona in strada 
+    \item Veicolo non in strada
     \item Traffico congestionato
-    \item Attraversamento pedonale fuori dalle strisce 
-    \item Veicolo al di fuori della strada (es. marciapiede) %ew
-    \item Urto tra veicoli e tra veicolo e pedone
-    \item Sosta non consentita
+    \item Urti
 \end{itemize}
 La corretta implementazione del modulo di correzione, che è posto come filtro tra la classificazione e il tracciamento delle entità, ha il fine di migliorare i risultati della rilevazione delle anomalie elencate sopra.
 

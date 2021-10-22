@@ -26,11 +26,19 @@ Questo modulo di inferenza è configurato per il modello di \emph{Object Detecti
 
 Il modulo di correzione si occupa della rimozione di duplicati ed occlusioni e della correzione della distorsione prospettica descritta in questa tesi.
 
-Il modulo di tracking effettua il tracciamento delle entità, utilizzando una funzione di smoothing per ridurre le imprecisioni della classificazione.
-Il tracking è effettuato sia utilizzando l'ultima posizione conosciuta, sia la posizione predetta in base a velocità e accelerazione.
+Il modulo di tracciamento effettua l'identificazione delle entità e ne calcola velocità e accelerazione, utilizzando una funzione di media continua per ridurre le imprecisioni dovute alle posizioni restituite dal modulo di classificazione.
+Il tracciamento è effettuato sia utilizzando l'ultima posizione conosciuta, sia la posizione predetta in base a velocità e accelerazione.
 
-Il modulo di rilevazione di anomalie si occupa di posizionare le entità all'interno della mappa stradale (preconfigurata da un operatore), di assegnarvi una forma approssimata e di comunicare con i sottomoduli di rilevazione delle singole anomalie.
-I dati relativi alla mappa sono gestiti attraverso coordinate baricentriche e sono utilizzati per \emph{Cambio di corsia}, \emph{Sosta vietata}, \emph{Persona in strada}, \emph{Invasione di area}.
+Il modulo di rilevazione di anomalie si occupa di posizionare le entità all'interno della mappa stradale (preconfigurata da un operatore), di assegnarvi una forma approssimata e di comunicare con i sottomoduli di rilevazione delle singole anomalie. Questi sottomoduli sono:
+\begin{itemize}
+    \item \emph{Cambio di corsia non permesso}
+    \item \emph{Sosta vietata}
+    \item \emph{Persona in strada}
+    \item \emph{Veicolo non in strada}
+    \item \emph{Traffico congestionato}
+    \item \emph{Urti}
+\end{itemize}
+I dati relativi alla mappa sono gestiti attraverso coordinate baricentriche e sono utilizzati per \emph{Cambio di corsia non permesso}, \emph{Sosta vietata}, \emph{Persona in strada}, \emph{Veicolo non in strada}.
 Gli \emph{Urti} sono verificati simulando la posizione futura delle entità e cercando intersezioni con l'algoritmo \emph{GJK}\cite{arch:gjk}.
 
 Il modulo di comunicazione ottiene i dati relativi alle anomalie e lo stream video e si occupa di salvare segmenti di video in cui sono presenti una o più anomalie.
@@ -44,4 +52,4 @@ Per le operazioni di algebra lineare è utilizzato \emph{MathJS}\cite{arch:mathj
 Per implementare il rendering dell'immagine manipolata è stato utilizzato \emph{GpuJS}\cite{arch:gpujs}, in quanto ha consentito di evitare i costi di tempo richiesti per imparare \emph{WebGL}\cite{arch:webgl}.
 Questa libreria non è però abbastanza matura e presenta alcuni comportamenti non ideali, ed è quindi raccomandabile spendere il tempo necessario per imparare \emph{WebGL} in futuro.
 Tutto il resto delle funzionalità è implementato attraverso l'uso di \emph{WebAPI}\cite{arch:webapi} e \emph{Svelte}\cite{arch:svelte}.
-Il deploy è effettuato come \emph{SPA}\cite{arch:spa} su \emph{GitHub Pages}\cite{arch:ghpages}.
+Il deploy è effettuato come \emph{Single Page Application} su \emph{GitHub Pages}\cite{arch:ghpages}.
