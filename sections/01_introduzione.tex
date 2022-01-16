@@ -1,59 +1,41 @@
 \chapter{Introduzione e stato dell'arte}
 \label{sec:introduzione}
 
-La correzione della \emph{distorsione prospettica} è un passaggio necessario nella maggioranza dei processi che estraggono informazioni da immagini acquisite attraverso una camera.
-Nei casi in cui tale distorsione sia poco accentuata è possibile approssimare una correzione utilizzando trasformazioni lineari come rotazione, scalatura e shear dell'immagine.
-% Negli altri casi risulta necessario un approccio più profondo, che richiede un cambio di coordinate da cartesiane a proiettive omogenee e la generazione di una matrice omografica che trasformi lo \emph{spazio immagine} in \emph{spazio reale}.
-% Spesso per semplicità si riduce lo \emph{spazio reale} ad un piano approssimabile alla superficie dell'oggetto di interesse.
-Negli altri casi risulta necessario un approccio più profondo: si limita lo \emph{spazio reale} preso in considerazione a un piano bidimensionale e si individua la trasformazione che proietta lo \emph{spazio immagine} nel piano scelto.
-Tale trasformazione è rappresentata attraverso una matrice omografica in coordinate omogenee.
-Lo studio di come generare la matrice di trasformazione in questione è esplorato in modo particolarmente esteso nel campo del processing di documenti; i documenti presentano caratteristiche facilemente individuabili su cui poter fare leva per ricavare informazioni sulla distorsione dell'immagine.
-È infatti possibile sfruttare le linee parallele e perpendicolari nei bordi e nel testo per ricavare la matrice di trasformazione desiderata \cite{persp:docs}.
-Un possibile approccio nel campo della video sorveglianza è quello di sfruttare un dispositivo di acquisizione immagini in grado di identificare la profondità di ogni pixel dell'immagine inquadrata e con questa ricavare la trasformazione voluta \cite{persp:depth}.
-Un'ulteriore alternativa è quella di individuare una corrispondenza tra 4 punti conosciuti nello \emph{spazio reale} e nello \emph{spazio immagine} e utilizzare tale corrispondenza per generare la matrice omografica \cite{persp:map}.
-% Quest'ultimo metodo è spesso utilizzato anche quando non si conoscono esattamente le coordinate dei punti nello \emph{spazio reale}, ma si conosce la loro disposizione. Individuando 4 punti che nello \emph{spazio reale} delineano un quadrato e correlandoli con i corrispettivi 4 punti nello \emph{spazio immagine} è possibile generare facilmente una matrice di correzione. Tale matrice non garantisce però magnitudini corrette e corregge solamente angoli e rapporto tra gli assi.
-
-Nonostante tutti i metodi sopra siano ottime soluzioni, nessuna di queste è facilmente applicabile senza enormi sforzi: il metodo della mappatura richiede la conoscenza di misurazioni precise per ogni camera implementata nel sistema; il metodo della derivazione dalla profondità richiede la spesa per l'acquisto di camere in grado di rilevarla; i metodi che utilizzano linee parallele e perpendicolari, utilizzati per i documenti, sono probabilmente i più interessanti ma richiedono un enorme sforzo implementativo per essere applicati al nostro contesto.
+% Homogenous matrix: 4 points, automatic generation; Single view metrology.
+% Kalman filters, EWMA, Moving averages
 
 \section{Contesto e motivazioni}
 
 Lo sviluppo di un sistema di rilevazione di anomalie stradali richiede la conoscenza dei dati relativi alle entità presenti nella scena inquadrata dalla telecamera di sorveglianza.
 In particolare risultano necessari i dati relativi a posizione, velocità e categoria delle entità.
-La posizione e la categoria possono essere ricavate utilizzando una \emph{Convolutional Neural Network (CNN)} che esegue l'\emph{Object Detection}.
-La velocità può poi essere ricavata applicando un algoritmo di tracciamento ai dati ottenuti nella fase di categorizzazione.
+La categoria è importante per differenziare persone, veicoli e oggetti, posizione e velocità sono importanti per comprendere come questi si comportano e interagiscono.
+Possiamo ottenere la categoria delle entità e la loro posizione nell'immagine utilizzando una \emph{CNN}.
+\textbf{TODO: DUE PAROLE SUL TRACKING}
 
-Questi dati sono però in \emph{spazio immagine} e non in \emph{spazio reale}.
-Questi due spazi differiscono in numero di dimensioni, essendo lo \emph{spazio immagine} bidimensionale e lo \emph{spazio reale} tridimensionale.
-Non esiste perciò una trasformazione lineare dall'uno all'altro.
-Utilizzare le misurazioni in \emph{spazio immagine} per la rilevazione di anomalie porta a un sistema fragile e poco affidabile, in quanto tali misurazioni risultano distorte rispetto a i loro valori reali.
+Sia posizione che velocità ottenute in questo modo sono in spazio immagine e non corrispondono con le misure reali.
+Inoltre entrambe presentano errori simili a rumore, derivati dalla precisione non perfetta dell'Object Detection.
 
-È perciò necessario individuare una trasformazione da \emph{spazio immagine} a \emph{spazio reale}.
-Deve essere possibile arrivare a tale trasformazione senza conoscere i dati reali relativi alla camera e alla superficie inquadrata, in quanto questi non sono sempre disponibili.
-Inoltre applicare questa trasformazione deve necessariamente essere poco costoso computazionalmente, in modo da mantenere il sistema di rilevazione di anomalie eseguibile in real time.
+Per ottenere un sistema affidabile è necessario correggere in modo efficace sia la distorsione prospettica sia il rumore.
 
 \section{Obiettivo della tesi}
 \begin{itemize}
-	\item Sviluppare un algoritmo di correzione prospettica applicabile ad un sistema di rilevazione di anomalie nel contesto della sicurezza stradale.
-	\item Sviluppare e implementare un tool interattivo per la generazione di dati relativi alla distorsione prospettica della singola camera.
+	\item Indicare una metodologia per la correzione della distorsione prospettica per inquadrature con orientamento arbitrario da applicare al contesto stradale.
+	\item Indicare una metodologia per la correzione del rumore delle misure di posizione e velocità per entità come persone e veicoli.
 \end{itemize}
 
 \section{Attività della tesi}
 
 \begin{itemize}
 	\item Studio delle trasformazioni di proiezione
-	\item Sviluppo del tool interattivo per la generazione delle informazioni relative alla camera
-	\item Implementazione del modulo di correzione nel sistema real time di rilevazione anomalie
+	\item Studio delle tecniche di correzione del rumore
+	\item \textbf{TODO: il resto}
 	\item Confronto tra risultati con e senza correzione
 \end{itemize}
 
 \section{Schema della tesi}
 
-Nel capitolo \ref{sec:teoria} è illustrato il problema ed è modellato dal punto di vista matematico. In questo capitolo vengono discusse e giustificate le formule applicate.
-
-Nel capitolo \ref{sec:funzionalita} sono illustrate le funzionalità richieste ai due sistemi, quello di correzione e quello di generazione della trasformazione correttiva, e sono discusse le scelte compiute per ottenerle.
-
-Nel capitolo \ref{sec:implementazione} è descritta brevemente l'architettura del sistema con cui il modulo di correzione interagisce e sono discusse le tecnologie e le metodologie implementative utilizzate.
-
-Nel capitolo \ref{sec:testing} è descritto il processo di validazione e valutazione della soluzione proposta e i suoi risultati.
-
-Infine nel capitolo \ref{sec:conclusioni} è riassunto il lavoro svolto, sono discussi i risultati ottenuti e sono suggeriti possibili sviluppi e miglioramenti,
+Nel capitolo \ref{sec:funzionalita} sono illustrati in dettaglio i problemi affrontati e il modo in cui sono affrontati allo stato dell'arte.
+Nel capitolo \ref{sec:architettura} è illustrata l'architettura del sistema di rilevazione di anomalie stradali.
+Nel capitolo \ref{sec:prospettiva} è descritta la soluzione scelta per la correzione della distorsione prospettiva, la sua implementazione e le problematiche riscontrate.
+Nel capitolo \ref{sec:rumore} è descritta la soluzione scelta per la correzione del rumore presente nelle misurazioni, la sua implementazione e le problematiche riscontrate.
+Infine nel capitolo \ref{sec:conclusioni} è riassunto il lavoro svolto, sono discussi i risultati ottenuti e sono suggeriti possibili sviluppi e miglioramenti.

@@ -1,0 +1,25 @@
+\chapter{Funzionalità}
+\label{sec:funzionalita}
+
+Il sistema da noi sviluppato per monitorare una scena urbana per la rilevazione di anomalie deve essere in grado di adempiere a vari compiti:
+\begin{enumerate}
+    \item \label{itm:1} Rilevare le entità presenti nella scena
+    \item \label{itm:2} Tracciare le entità nel tempo, associando loro un ID
+    \item \label{itm:3} Misurare posizione e velocità delle entità tracciate
+    \item \label{itm:4} Rilevare, in base alle misure effettuate, quando si verifica un'anomalia e da quali entità essa è causata
+    \item \label{itm:5} Notificare un sistema esterno dell'avvenuta anomalia
+\end{enumerate}
+
+L'utilizzo di un Object Detector come Yolo \textbf{TODO: VERSIONE SPECIFICA E REF} permette di completare il punto \ref{itm:1}.
+Il punto \ref{itm:2} può essere svolto utilizzando le misure ottenute nel punto \ref{itm:3} e predicendo la posizione delle entità nei frame successivi. 
+Questa predizione può essere utilizzata per eseguire il match tra le entità già conosciute e quelle rilevate nel frame corrente. 
+Utilizzando un tracker capace di \textbf{TODO: SUGGERISCI UN TRACKER COME QUELLO DI NVIDIA} si ottengono risultati migliori di quelli ottenuti eseguendo il match utilizzando solamente posizione, velocità, categoria e caratteristiche del bounding box dell'entità.
+Il punto \ref{itm:4} è svolto utilizzando euristiche sviluppate e validate sperimentalmente. 
+Il punto \ref{itm:5} utilizza il protocollo HTTP per inoltrare le anomalie ad un microservizio attivo sullo stesso dispositivo, che gestisce la comunicazione con sistemi esterni.
+Il punto \ref{itm:3} richiede la correzione della distorsione prospettica e del rumore presente nelle misurazioni, ed è l'argomento principale di questa tesi.
+
+\section{Distorsione prospettica}
+\textbf{TODO}
+
+\section{Correzione del rumore}
+\textbf{TODO}

@@ -1,0 +1,22 @@
+\chapter{Architettura}
+\label{sec:architettura}
+
+% TODO: AGGIUNGI IMMAGINI, RIFERIMENTI 
+
+% Definire e desccrivere nei dettagli l'architettura a blocchi, descrivendo ciascun blocco e i collegamenti.
+% Non è ancora necessario dare dettagli implementativi, che andranno nel capitolo dedicato.
+% Descrizione tecnologie utilizzate per implementare ciascun blocco.
+% Qui vanno i dettagli implementativi per ciascun blocco dell'architettura definita nel capitolo precedente.
+% Potrebbe convenire replicare l'immagine dell'architettura, definendo all'interno dell'immagine dettagli implementativi come ad esempio i nomi dei moduli utilizzati e le tecnologie utilizzate per implementarli.
+
+\textbf{TODO: AGGIUNGI IMMAGINE}
+
+L'architettura scelta è una pipeline, in quanto l'input del sistema è uno stream video.
+Ogni frame dello stream deve essere processato nello stesso modo, e utilizzare una pipeline consente di aggiungere, rimuovere o sostituire moduli, e quindi modificare il processo, in modo semplice e veloce.
+
+Il sistema è implementato sul dispositivo \emph{Nvidia Jetson Xaxier}\cite{arch:jetson} ed è sviluppato su \emph{Ubuntu 18.04}\cite{arch:ubuntu}.
+Il linguaggio di sviluppo è \emph{Python 3.6}\cite{arch:python}.
+Per la gestione delle operazione di algebra lineare sono stati utilizzati i package \emph{Numpy}\cite{arch:numpy} e \emph{SciPy}\cite{arch:scipy}.
+La pipeline di acquisizione è gestita dalla libreria \emph{GStreamer}\cite{arch:gstreamer}.
+La classificazione è effettuata dal modulo di inferenza fornito dall'\emph{SDK Nvidia Deepstream}\cite{arch:deepstream}.
+Questo modulo di inferenza è configurato per il modello di \emph{Object Detection YoloV4}\cite{arch:yolo}.
