@@ -19,6 +19,7 @@ Il punto \ref{itm:5} utilizza il protocollo HTTP per inoltrare le anomalie ad un
 Il punto \ref{itm:3} richiede la correzione della distorsione prospettica e del rumore presente nelle misurazioni per essere utile alle euristiche del punto \ref{itm:4}, ed è l'argomento principale di questa tesi.
 
 \section{Distorsione prospettica}
+\label{sec:funzionalita-prospettiva}
 La correzione della distorsione prospettica si divide in due fasi:
 \begin{enumerate}
     \item Compresione della geometria della scena rappresentata nell'immagine
@@ -33,6 +34,7 @@ Questo ci permette di ridurre il problema ad individuazione e applicazione di un
 
 
 \section{Correzione del rumore}
+\label{sec:funzionalita-rumore}
 Le \emph{CNN} per l'\emph{Object Detection} che utilizziamo per rilevare le entità all'interno dello stream video trattano ogni frame indipendentemente dagli altri.
 Per questo motivo, e per il fatto che il processo di individuazione è un processo probabilistico, i Bounding Boxes ottenuti non avvolgono perfettamente le entità.
 Le imprecisioni presenti in tali Bounding Boxes non presentano bias e raramente si allontanano in modo significativo dalla loro posizione ideale.
