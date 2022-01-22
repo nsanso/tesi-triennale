@@ -22,15 +22,15 @@ Il punto \ref{itm:3} richiede la correzione della distorsione prospettica e del 
 \label{sec:funzionalita-prospettiva}
 La correzione della distorsione prospettica si divide in due fasi:
 \begin{enumerate}
-    \item Compresione della geometria della scena rappresentata nell'immagine
+    \item Comprensione della geometria tridimensionale della scena rappresentata nell'immagine
     \item Proiezione dell'immagine sulla scena ricostruita.
 \end{enumerate}
-Processi che eseguono entrambe le fasi in modo completo ed accurato restituiscono una approssimazione tridimensionale della scena, e utilizzano informazioni di profondità ottenute o direttamente, utilizzando per esempio camere stereo, o estratte dalla geometria dell'immagine.
+Processi che eseguono entrambe le fasi in modo completo ed accurato restituiscono una approssimazione tridimensionale della scena, e utilizzano informazioni di profondità ottenute o direttamente, utilizzando per esempio camere stereo, o estratte dalle caratteristiche dell'immagine.
 
 Dovendo però ricostruire una scena di contesto stradale possiamo assumere che il manto stradale corrisponda ad un piano, e limitare le nostre operazioni in questo nuovo dominio.
 Questo ci permette di ridurre il problema ad individuazione e applicazione di una matrice di proiezione prospettica dal piano immagine al piano stradale.
 
-\textbf{TODO: blah blah blah Documenti e OCR, Quattro punti, Non danno misure precise lo faccio a mano}
+\textbf{TODO: blah blah blah Documenti e OCR, Quattro punti, Non danno misure precise lo faccio interattivo}
 
 
 \section{Correzione del rumore}
@@ -39,11 +39,10 @@ Le \emph{CNN} per l'\emph{Object Detection} che utilizziamo per rilevare le enti
 Per questo motivo, e per il fatto che il processo di individuazione è un processo probabilistico, i Bounding Boxes ottenuti non avvolgono perfettamente le entità.
 Le imprecisioni presenti in tali Bounding Boxes non presentano bias e raramente si allontanano in modo significativo dalla loro posizione ideale.
 Per questi motivi possiamo trattare le imprecisioni come rumore con distribuzione normale, e correggerlo quindi con operazioni di media continua.
-Stiamo però cercando di ottenere la posizione e la velocità di entità in movimento, ed entrambe le variabili misurate possono cambiare di intensità nel periodo in cui l'entità è tracciata.
+Stiamo però cercando di ottenere la posizione e la velocità di entità in movimento, ed entrambe le variabili misurate possono cambiare il loro valore nel periodo in cui l'entità è tracciata.
 
 \textbf{DA QUI IN POI VA RISCRITTO CON PIÙ CITAZIONI E MENO A CASO} \\
 Tale problema è trattato spesso in contesti di tracking, e la soluzione allo stato dell'arte è quella di utilizzare Kalman Filters.
 Questi permettono di aggiornare più variabili in base a conoscenze a priori e a nuove misure in modo pesato.
 Più siamo sicuri delle nostre conoscenze e più gli diamo peso, ma se queste si discostano in modo significativo dalle nuove misure, o la nostra sicurezza diminuisce, queste nuove misure diventano più significative anche nei nostri calcoli.
-È possibile simulare questo comportamento anche utilizzando altri algoritmi di correzione che sfruttano l'EWMA (Exponentially weighted moving average).
-\textbf{LEGGI QUEL PAPER, CITALO E SCRIVI DUE RIGHE SU DIFFERENZE E SIMILARITÀ}
+È possibile simulare questo comportamento anche utilizzando altri algoritmi di correzione che sfruttano l'EWMA (Exponentially weighted moving average) e questa è la soluzione descritta in questa tesi.
