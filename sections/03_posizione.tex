@@ -1,8 +1,8 @@
-\chapter{Distorsione prospettica}
-\label{sec:prospettiva}
+\chapter{Posizione}
+\label{sec:posizione}
 
 \textbf{TODO: Continua}
-Una camera acquisisce un'immagine catturando la luce proveniente dalla scena in un sensore posto dietro un'apertura \textbf{NOME DI APERTURA}.
+Una camera acquisisce un'immagine catturando la luce proveniente dalla scena in un sensore posto dietro un'apertura, normalmente controllata da un otturatore.
 Per focalizzare i raggi di luce sul sensore è utilizzata una lente.
 Queste lenti introducono una distorsione radiale nell'immagine catturata, che dipende dalla curvatura della lente.
 In alcuni casi tale distorsione è particolarmente intensa, ed è necessario correggerla prima di affrontare la distorsione prospettica, ma nella maggioranza dei casi questa non è notevole e può essere ignorata.
@@ -14,10 +14,10 @@ Comunemente si utilizza 1 unità come dimensione dei pixel dell'immagine, e la l
 Così facendo è possibile utilizzare qualsiasi unità di misura desiderata per la realtà senza dover modificare le coordinate dei punti dell'immagine.
 Un'altra scelta comune per semplificare i calcoli è quella di porre l'origine degli assi delle coordinate al centro dell'immagine, orientare l'asse $x$ con le righe dell'immagine, l'asse $y$ con le colonne, e l'asse $z$ con l'asse ottico della camera, che è la linea che passa tra la camera e il centro dell'immagine.
 
-Come espresso nella sezione \ref{sec:funzionalita-prospettiva} a noi interessa solamente ricorstruire ciò che accade sulla strada e ignoriamo il resto della scena.
+Come espresso nella sezione \ref{sec:funzionalita-posizione} a noi interessa solamente ricorstruire ciò che accade sulla strada e ignoriamo il resto della scena.
 Possiamo approssimare la strada con un piano, che chiamiamo piano stradale.
 L'operazione che dobbiamo eseguire per correggere la distorsione prospettica si riduce così dalla proiezione da immagine a spazio reale tridimensionale a una proiezione da immagine a piano bidimensionale (fig \ref{fig:camera coords}).
-Questa operazione non è lineare in coordinate cartesiane, ma diventa lineare se si utilizzano coordinate proiettive omogenee, ed è quindi possibile definire una matrice lineare di trasformazione.
+Questa operazione non è lineare in coordinate cartesiane, ma diventa lineare se si utilizzano coordinate proiettive omogenee \textbf{CITAZIONE}, ed è quindi possibile definire una matrice lineare di trasformazione.
 
 \begin{figure}
     \caption{Modello con coordinate}

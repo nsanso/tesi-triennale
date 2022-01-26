@@ -1,0 +1,41 @@
+\chapter{Velocità}
+\label{sec:velocita}
+
+Possiamo calcolare la velocità $V$ utilizzando l'equazione \ref{eq:vel}
+\begin{equation}
+    \label{eq:vel}
+    \vec{V}_t = \frac{(\vec{P}_t - \vec{P}_{t-1})}{\Delta}
+\end{equation}
+dove $\vec{P}$ è la posizione reale calcolata in precedenza e $\Delta$ è intervallo tra $t$ e $t-1$.
+Calcolare la velocità in questo modo amplifica gli errori presenti nelle misure di posizione, soprattutto se $\Delta$ è piccolo.
+Possiamo però sfruttare il fatto che $\Delta$ è piccolo prendendo come assunto che la differenza tra $\vec{V}_t$ e $\vec{V}_{t-1}$ sia anch'essa piccola.
+Possiamo quindi provare a correggere il rumore utilizzando una media mobile esponenziale, come in \ref{eq:ewma}
+\begin{equation}
+    \label{eq:ewma}
+    \vec{V'}_t = k \cdot \vec{V'}_{t-1} + (1-k) \cdot \vec{V}_t
+\end{equation}
+dove $k \in [0, 1)$ e $V$ è calcolata come in \ref{eq:vel}.
+Notiamo però che quest'approccio introduce un ritardo tra i valori calcolati e quelli reali (fig \ref{fig:lag}).
+È perciò necessario utilizzare un algoritmo che corregga questo ritardo.
+L'algoritmo sviluppato dallo studente è espresso dalle equazioni in \ref{eq:smoothns}
+\begin{equation}
+    \label{eq:smoothns}
+    \begin{split}
+        & v_t = v'_{t-1} + v''_{t-1} \cdot \Delta \\
+        & v'_t = k \cdot v_t + (1-k) \cdot V_t \\
+        & v''_t = k \cdot v'_{t-1} + (1-k) \cdot (v'_t - v_t) \\
+        & V'_t = v'_t + v''_t \cdot \left(\frac{1}{1-k} - 1\right) \\
+    \end{split}
+\end{equation}
+L'algoritmo proposto da \textbf{LaViola2003} è espresso dalle equazioni in \ref{eq:laviola}
+\begin{equation}
+    \label{eq:laviola}
+    \begin{split}
+        & v'_t = \alpha \cdot V_t + (1-\alpha) \cdot v'_{t-1} \\
+        & v''_t = \alpha \cdot v'_{t} + (1-\alpha) \cdot v''_{t-1} \\
+        & V'_t = \left(2 + \frac{\alpha \cdot \Delta}{1 - \alpha}\right) \cdot v'_t - \left(1 + \frac{\alpha \cdot \Delta}{1 - \alpha}\right) \cdot v''_t \\
+    \end{split}
+\end{equation}
+In fig \ref{fig:smooth} sono messi a confronto \ref{eq:vel}, \ref{eq:ewma}, \ref{eq:smoothns}, \ref{eq:laviola}.
+
+\textbf{TODO: AGGIUNGI MOLTE IMMAGINI DI CONFRONTO, E SE IL TUO ESCE PEGGIO RIMUOVILO DA QUI E DAL PROGETTO}

@@ -3,8 +3,13 @@
 
 \textbf{TODO}
 
-% NON SUDDIVISA per punti ma discorsiva (io suddivido per punti per chiarezza):
-% •	l'obiettivo era (notare il tempo al passato) bl bla ripeti quanto detto in cap 1
-% •	Abbiamo perseguito gli scopi preposti facendo bla bla ribadisci quanto raccontato nella tesi
-% •	I risultati sono bla bla (sottolinea le cose + salienti
-% •	commenti, limiti del lavoro, considerazioni, conclusioni e sviluppi futuri.
+Abbiamo descritto un possibile approccio che permette di ricavare informazioni relative a posizione e velocità delle entità presenti nell'inquadratura di un sistema di sorveglianza stradale.
+L'approccio descritto richiede che siano vere vari assunti, come per esempio che un piano sia una buona approssimazione del manto stradale e che l'intervallo di tempo tra una misura e l'altra sia piccolo e costante.
+Nel caso questi non si verifichino nella nostra scena, è possibile utilizzare soluzioni più sofisticate, come per esempio la Single View Metrology \textbf{CITA Criminisi} per i problemi di prospettiva e Kalman Filter ed estensioni \textbf{CITAZIONE} per i problemi di precisione nelle misure.
+
+Ci sono delle problematiche non risolte per quanto riguarda la locazione delle entità:
+\begin{itemize}
+    \item a seconda della direzione di movimento e della dimensione delle entità, la posizione non è perfettamente approssimata.
+    \item non è trattato un metodo per approssimare la forma delle entità, necessaria per lo sviluppo di un sistema in grado di rilevare urti tra di esse.
+\end{itemize}
+Queste problematiche rimangono al momento irrisolte.
