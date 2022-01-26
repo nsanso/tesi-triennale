@@ -10,10 +10,8 @@ Il sistema da noi sviluppato per monitorare una scena urbana per la rilevazione 
     \item \label{itm:5} Notificare un sistema esterno dell'avvenuta anomalia
 \end{enumerate}
 
-L'utilizzo di un Object Detector come Yolo \textbf{TODO: VERSIONE SPECIFICA E REF} permette di completare il punto \ref{itm:1}.
-Il punto \ref{itm:2} può essere svolto utilizzando le misure ottenute nel punto \ref{itm:3} e predicendo la posizione delle entità nei frame successivi. 
-Questa predizione può essere utilizzata per eseguire il match tra le entità già conosciute e quelle rilevate nel frame corrente. 
-Utilizzando un tracker capace di \textbf{TODO: SUGGERISCI UN TRACKER COME QUELLO DI NVIDIA} si ottengono risultati migliori di quelli ottenuti eseguendo il match utilizzando solamente posizione, velocità, categoria e caratteristiche del bounding box dell'entità.
+L'utilizzo di un Object Detector come Yolo \textbf{CITAZIONE} permette di completare il punto \ref{itm:1}.
+Il punto \ref{itm:2} è gestito utilizzando algoritmi di tracking \textbf{TRACKER NVIDIA}. In questa fase sono inoltre utilizzati algoritmi di smoothing per ridurre l'errore presente nelle posizioni ottenute al punto \ref{itm:1}.
 Il punto \ref{itm:4} è svolto utilizzando euristiche sviluppate e validate sperimentalmente. 
 Il punto \ref{itm:5} utilizza il protocollo HTTP per inoltrare le anomalie ad un microservizio attivo sullo stesso dispositivo, che gestisce la comunicazione con sistemi esterni.
 Il punto \ref{itm:3} richiede la correzione della distorsione prospettica e del rumore presente nelle misurazioni per essere utile alle euristiche del punto \ref{itm:4}, ed è l'argomento principale di questa tesi.
@@ -25,24 +23,10 @@ La correzione della distorsione prospettica si divide in due fasi:
     \item Comprensione della geometria tridimensionale della scena rappresentata nell'immagine
     \item Proiezione dell'immagine sulla scena ricostruita.
 \end{enumerate}
-Processi che eseguono entrambe le fasi in modo completo ed accurato restituiscono una approssimazione tridimensionale della scena, e utilizzano informazioni di profondità ottenute o direttamente, utilizzando per esempio camere stereo, o estratte dalle caratteristiche dell'immagine.
-
+Processi che eseguono entrambe le fasi in modo completo ed accurato restituiscono una approssimazione tridimensionale della scena, e utilizzano informazioni di profondità ottenute o direttamente \textbf{CITAZIONE}, utilizzando per esempio camere stereo, o estratte dalle caratteristiche dell'immagine \textbf{CITAZIONE}.
 Dovendo però ricostruire una scena di contesto stradale possiamo assumere che il manto stradale corrisponda ad un piano, e limitare le nostre operazioni in questo nuovo dominio.
 Questo ci permette di ridurre il problema ad individuazione e applicazione di una matrice di proiezione prospettica dal piano immagine al piano stradale.
-
-\textbf{TODO: blah blah blah Documenti e OCR, Quattro punti, Non danno misure precise lo faccio interattivo}
-
-
-\section{Correzione del rumore}
-\label{sec:funzionalita-rumore}
-Le \emph{CNN} per l'\emph{Object Detection} che utilizziamo per rilevare le entità all'interno dello stream video trattano ogni frame indipendentemente dagli altri.
-Per questo motivo, e per il fatto che il processo di individuazione è un processo probabilistico, i Bounding Boxes ottenuti non avvolgono perfettamente le entità.
-Le imprecisioni presenti in tali Bounding Boxes non presentano bias e raramente si allontanano in modo significativo dalla loro posizione ideale.
-Per questi motivi possiamo trattare le imprecisioni come rumore con distribuzione normale, e correggerlo quindi con operazioni di media continua.
-Stiamo però cercando di ottenere la posizione e la velocità di entità in movimento, ed entrambe le variabili misurate possono cambiare il loro valore nel periodo in cui l'entità è tracciata.
-
-\textbf{DA QUI IN POI VA RISCRITTO CON PIÙ CITAZIONI E MENO A CASO} \\
-Tale problema è trattato spesso in contesti di tracking, e la soluzione allo stato dell'arte è quella di utilizzare Kalman Filters.
-Questi permettono di aggiornare più variabili in base a conoscenze a priori e a nuove misure in modo pesato.
-Più siamo sicuri delle nostre conoscenze e più gli diamo peso, ma se queste si discostano in modo significativo dalle nuove misure, o la nostra sicurezza diminuisce, queste nuove misure diventano più significative anche nei nostri calcoli.
-È possibile simulare questo comportamento anche utilizzando altri algoritmi di correzione che sfruttano l'EWMA (Exponentially weighted moving average) e questa è la soluzione descritta in questa tesi.
+La soluzione più usata è quella di calcolare direttamente la matrice mettendo in corrispondenza 4 punti nell'immagine con 4 punti nel piano reale \textbf{CITAZIONE}.
+Questo richiede però conoscere esattamente la posizione dei 4 punti, e quindi effettuare misure sul campo.
+Non è quindi una soluzione accettabile per il nostro sistema, in quanto vogliamo essere in grado di aggiungere nuove inquadrature lavorando esclusivamente in remoto.
+Questa tesi studia la costruzione della matrice di proiezione prospettica per individuare una soluzione adatta al nostro sistema.
