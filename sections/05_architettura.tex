@@ -19,5 +19,6 @@ Il linguaggio di sviluppo è \emph{Python 3.6}\cite{arch:python}.
 Per la gestione delle operazione di algebra lineare sono stati utilizzati i package \emph{Numpy}\cite{arch:numpy} e \emph{SciPy}\cite{arch:scipy}.
 La pipeline di acquisizione è gestita dalla libreria \emph{GStreamer}\cite{arch:gstreamer}.
 La classificazione è effettuata dal modulo di inferenza fornito dall'\emph{SDK Nvidia Deepstream}\cite{arch:deepstream}.
-Questo modulo di inferenza è configurato per il modello di \emph{Object Detection Scaled--YoloV4}\cite{arch:yolo}.
-Il tracking è effettuato nel modulo di inferenza dal \textbf{TODO: TRACKER NVIDIA}.
+Questo modulo di inferenza è configurato per il modello di \emph{Object Detection Scaled--YoloV4}\cite{yolocsp}.
+Il tracking è gestito dal tracker \emph{NvDCF} \cite{nvdcf}, anch'esso fornito dall'\emph{SDK Nvidia Deepstream}.
+La segnalazione delle anomalie è effettuata utilizzando la libreria \emph{Requests} \cite{arch:requests}.

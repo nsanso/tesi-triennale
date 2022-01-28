@@ -9,8 +9,9 @@
 Lo sviluppo di un sistema di rilevazione di anomalie stradali richiede la conoscenza dei dati relativi alle entità presenti nella scena inquadrata dalla telecamera di sorveglianza.
 In particolare risultano necessari i dati relativi a posizione, velocità e categoria delle entità.
 La categoria è importante per differenziare persone, veicoli e oggetti, mentre posizione e velocità sono importanti per comprendere come questi si comportano e interagiscono.
-Possiamo ottenere la categoria delle entità e la loro posizione nell'immagine utilizzando un Object Detector, come ad esempio una \emph{CNN}.
-\textbf{TODO: DUE PAROLE SUL TRACKING}
+Possiamo ottenere la categoria delle entità e la loro posizione nell'immagine utilizzando un Object Detector, generalmente implementato con una Convolutional Neural Network \cite{cnn}.
+È necessario poi tracciare le entità tra un frame e l'altro, in modo da poterne misurare gli spostamenti e quindi la velocità.
+Si ottengono buoni risultati con tracker basati su Discriminative Correlation Filters \cite{dcf}
 
 Sia posizione che velocità ottenute in questo modo sono in spazio immagine e non corrispondono con le misure reali.
 Inoltre entrambe presentano errori simili a rumore, derivati dalla precisione non perfetta dell'Object Detection.
@@ -19,13 +20,14 @@ Per ottenere un sistema affidabile è necessario correggere in modo efficace sia
 \section{Obiettivo della tesi}
 \begin{itemize}
 	\item Indicare una metodologia per la correzione della distorsione prospettica per inquadrature con orientamento arbitrario, da applicare al contesto stradale.
+	\item Indicare un algoritmo di correzione del rumore che permetta di ricavare posizione e velocità affidabili.
 \end{itemize}
 
 \section{Attività della tesi}
 
 \begin{itemize}
 	\item Studio delle trasformazioni di proiezione
-	\item Calcolo della velocità dalla posizione con correzione del rumore
+	\item Sviluppo di un algoritmo di correzione del rumore
 	\item Implementazione delle tecniche scelte in un sistema di sorveglianza stradale
 \end{itemize}
 
@@ -33,6 +35,6 @@ Per ottenere un sistema affidabile è necessario correggere in modo efficace sia
 
 Nel capitolo \ref{sec:funzionalita} sono illustrati in dettaglio i problemi affrontati e il modo in cui sono affrontati allo stato dell'arte.
 Nel capitolo \ref{sec:posizione} è descritta la soluzione scelta per l'acquisizione della posizione con correzione della distorsione prospettica, la sua implementazione e le problematiche riscontrate.
-Nel capitolo \ref{sec:velocita} è descritta la soluzione scelta per l'acquisizione della velocità dalla posizione, con correzione del rumore.
+Nel capitolo \ref{sec:velocita} è descritta la soluzione scelta per la correzione ed l'acquisizione di misure di posizione e velocità.
 Nel capitolo \ref{sec:architettura} è illustrata l'architettura del sistema di rilevazione di anomalie stradali.
 Infine nel capitolo \ref{sec:conclusioni} è riassunto il lavoro svolto, sono discussi i risultati ottenuti e sono suggeriti possibili sviluppi e miglioramenti.

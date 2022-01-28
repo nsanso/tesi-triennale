@@ -17,7 +17,7 @@ Un'altra scelta comune per semplificare i calcoli è quella di porre l'origine d
 Come espresso nella sezione \ref{sec:funzionalita-posizione} a noi interessa solamente ricorstruire ciò che accade sulla strada e ignoriamo il resto della scena.
 Possiamo approssimare la strada con un piano, che chiamiamo piano stradale.
 L'operazione che dobbiamo eseguire per correggere la distorsione prospettica si riduce così dalla proiezione da immagine a spazio reale tridimensionale a una proiezione da immagine a piano bidimensionale (fig \ref{fig:camera coords}).
-Questa operazione non è lineare in coordinate cartesiane, ma diventa lineare se si utilizzano coordinate proiettive omogenee \textbf{CITAZIONE}, ed è quindi possibile definire una matrice lineare di trasformazione.
+Questa operazione non è lineare in coordinate cartesiane, ma diventa lineare se si utilizzano coordinate proiettive omogenee, ed è quindi possibile definire una matrice lineare di trasformazione.
 
 \begin{figure}
     \caption{Modello con coordinate}
@@ -30,15 +30,16 @@ Questa operazione non è lineare in coordinate cartesiane, ma diventa lineare se
 Tutte le trasformazioni affini sono componibili in coordinate omogenee, ed abbiamo quindi accesso a traslazione, rotazione e scalatura, a cui aggiungiamo la trasformazione di proiezione.
 La trasformazione di proiezione prende le coordinate di un punto sull'immagine e, date le coordinate del piano, restituisce la posizione reale del punto corrispondente al punto immagine.
 Dato che le coordinate sono omogenee e non cartesiane, il punto immagine è espresso con 3 coordinate e il punto reale trovato con 4 coordinate.
-La trasformazione di proiezione è rappresentata con la matrice \ref{eq:projmat}:
+La trasformazione di proiezione $P$ è rappresentata con la matrice \ref{eq:projmat}:
 \begin{equation}
-    \label{eq:projmat}
-    \begin{bmatrix}
-        cf - d & 0      & 0   \\
-        0      & cf - d & 0   \\
-        -fa    & -fb    & -fd \\
-        a      & b      & cf  \\
-    \end{bmatrix}
+        \label{eq:projmat}
+        P = 
+        \begin{bmatrix}
+            cf - d & 0      & 0   \\
+            0      & cf - d & 0   \\
+            -fa    & -fb    & -fd \\
+            a      & b      & cf  \\
+        \end{bmatrix}
 \end{equation}
 Dove:
 \begin{itemize}
@@ -46,29 +47,38 @@ Dove:
     \item la lunghezza focale della camera è $f$
 \end{itemize}
 
-\textbf{TODO: bla bla spiega combinazione}
-La matrice di trasformazione completa è definita quindi dalla combinazione di trasformazioni in \ref{eq:projcombo}:
+La matrice di trasformazione completa $M$ è definita quindi dalla combinazione di trasformazioni in \ref{eq:projcombo}:
 \begin{equation}
     \label{eq:projcombo}
-    \text{ \textbf{TODO}\  }
-    M = C \cdot B \cdot A
+    M = D \cdot T \cdot R \cdot P
 \end{equation}
 Dove:
 \begin{itemize}
-    \item blah
-    \item blah blah
+    \item $P$ è la matrice di proiezione dall'immagine al piano
+    \item $R$ è la rotazione dalla normale del piano all'opposto della normale dell'immagine
+    \item $T$ è la traslazione dall'origine del piano all'origine dell'immagine
+    \item $D$ è la matrice 
+    $
+    \begin{bsmallmatrix}
+        1 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 0 \\
+        0 & 0 & 0 & 1 \\
+    \end{bsmallmatrix}
+    $
+    che scarta la coordinata $z$ e ci riporta da 3 dimensioni a 2 dimensioni
 \end{itemize}
 Ricordiamo che le trasformazioni combinano da destra verso sinistra.
 Una rappresentazione visiva della combinazione è in fig \ref{fig:TODO}.
 
 Diventa quindi possibile definire la matrice di correzione della distorsione prospettica in modo interattivo, manipolando la rotazione e la posizione della camera rispetto al piano stradale.
+Possiamo infatti calcolare le coodinate del piano necessarie per $P$ partendo dal piano $[0, 0, 1, 0]$ (è il piano $z=0$) e applicando $R^{-1}$ e $T^{-1T}$ (la traslazione in coordinate proiettive si applica al piano mediante la trasposta della traslazione applicata ai punti).
 In questo modo si può trovare una trasformazione soddisfacente, in cui le misure si avvicinano a quelle reali, senza i grandi costi implementativi richiesti dall'implementazione di un metodo automatico per la definizione del piano stradale.
 Una volta definita la matrice di trasformazione il suo utilizzo risulta estremamente efficiente, in quanto si riduce a un prodotto matrice-vettore.
 
 L'ultima considerazione necessaria è la scelta del punto a cui applicare la trasformazione trovata.
-Notiamo dall'immagine \ref{fig:TODO} che scegliere in punto centrale del Bounding Box non restituisce il risultato desiderato.
+Notiamo dall'immagine \ref{fig:TODO} che scegliere il punto centrale del Bounding Box non restituisce il risultato desiderato.
 La strategia migliore è quella di proiettare il lato inferiore del Bounding Box, in quanto questo è l'unico che poggia sul piano stradale.
-Il centro delle entità può poi essere approssimato date le conoscenze relative a dimensioni medie della sua tipologia, dalla sua direzione di movimento e dalle caratteristiche del Bounding Box.
+Il centro delle entità può poi essere approssimato date le conoscenze relative a dimensioni medie della sua categoria, dalla sua direzione di movimento e dalle caratteristiche del Bounding Box.
 
-In fig \ref{fig:TODO} è presentata una scena annotata dall'Object Detector Scaled-YoloV4.
+In fig \ref{fig:TODO} è presentata una scena annotata dall'Object Detector Scaled-YoloV4 \cite{cspyolo}.
 In fig \ref{fig:TODO} è presentata la stessa scena dopo che è stata eseguita la correzione della distorsione prospettica, in cui la posizione dei veicoli è indicata dal cerchio verde.

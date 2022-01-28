@@ -10,10 +10,10 @@ Il sistema da noi sviluppato per monitorare una scena urbana per la rilevazione 
     \item \label{itm:5} Notificare un sistema esterno dell'avvenuta anomalia
 \end{enumerate}
 
-L'utilizzo di un Object Detector come Yolo \textbf{CITAZIONE} permette di completare il punto \ref{itm:1}.
-Il punto \ref{itm:2} è gestito utilizzando algoritmi di tracking \textbf{TRACKER NVIDIA}. In questa fase sono inoltre utilizzati algoritmi di smoothing per ridurre l'errore presente nelle posizioni ottenute al punto \ref{itm:1}.
-Il punto \ref{itm:4} è svolto utilizzando euristiche sviluppate e validate sperimentalmente. 
-Il punto \ref{itm:5} utilizza il protocollo HTTP per inoltrare le anomalie ad un microservizio attivo sullo stesso dispositivo, che gestisce la comunicazione con sistemi esterni.
+L'utilizzo di un Object Detector (e.g. Yolo \cite{arch:yolo}) permette di completare il punto \ref{itm:1}.
+Il punto \ref{itm:2} è gestito utilizzando algoritmi di tracking, come quelli basati su DCF \cite{dcf}.
+Il punto \ref{itm:4} è svolto utilizzando euristiche sviluppate e validate sperimentalmente che sfuttano le misure ottenute nel punto \ref{itm:3}. 
+Nel punto \ref{itm:5} utilizziamo il protocollo HTTP per inoltrare le anomalie ad un microservizio attivo sullo stesso dispositivo, che gestisce la comunicazione con sistemi esterni.
 Il punto \ref{itm:3} richiede la correzione della distorsione prospettica e del rumore presente nelle misurazioni per essere utile alle euristiche del punto \ref{itm:4}, ed è l'argomento principale di questa tesi.
 
 \section{Posizione}
@@ -25,10 +25,10 @@ La correzione della distorsione prospettica si divide in due fasi:
     \item Comprensione della geometria tridimensionale della scena rappresentata nell'immagine
     \item Proiezione dell'immagine sulla scena ricostruita.
 \end{enumerate}
-Processi che eseguono entrambe le fasi in modo completo ed accurato restituiscono una approssimazione tridimensionale della scena, e utilizzano informazioni di profondità ottenute o direttamente \textbf{CITAZIONE}, utilizzando per esempio camere stereo, o estratte dalle caratteristiche dell'immagine \textbf{CITAZIONE}.
+Processi che eseguono entrambe le fasi in modo completo ed accurato restituiscono una approssimazione tridimensionale della scena, e utilizzano informazioni di profondità ottenute o direttamente \cite{persp:depth}, utilizzando per esempio camere stereo, o estratte dalle caratteristiche dell'immagine \cite{svm}.
 Dovendo però ricostruire una scena di contesto stradale possiamo assumere che il manto stradale corrisponda ad un piano, e limitare le nostre operazioni in questo nuovo dominio.
 Questo ci permette di ridurre il problema ad individuazione e applicazione di una matrice di proiezione prospettica dal piano immagine al piano stradale.
-La soluzione più usata è quella di calcolare direttamente la matrice mettendo in corrispondenza 4 punti nell'immagine con 4 punti nel piano reale \textbf{CITAZIONE}.
+La soluzione più usata è quella di calcolare direttamente la matrice mettendo in corrispondenza 4 punti nell'immagine con 4 punti nel piano reale \cite{persp:map}.
 Questo richiede però conoscere esattamente la posizione dei 4 punti, e quindi effettuare misure sul campo.
 Non è quindi una soluzione accettabile per il nostro sistema, in quanto vogliamo essere in grado di aggiungere nuove inquadrature lavorando esclusivamente in remoto.
 Questa tesi studia la costruzione della matrice di proiezione prospettica per individuare una soluzione adatta al nostro sistema.
@@ -38,8 +38,8 @@ Questa tesi studia la costruzione della matrice di proiezione prospettica per in
 Possiamo ricavare la velocità reale delle entità utilizzando le posizioni corrette in precedenza.
 La velocità così misurata risulta caotica, in quanto gli errori di precisione presenti nelle misure di posizione vengono amplificati significativamente.
 È quindi necessario utilizzare un algoritmo di smoothing per correggere questo rumore e rendere utili le nostre misure.
-La soluzione più utilizzata allo stato dell'arte per la soluzione di queste problematiche è il Kalman Filter e le sue estensioni \textbf{CITAZIONE}, ma questo risulta difficile da comprendere e complesso da implementare.
-È stato dimostrato da \textbf{LaViola2003} che è possibile ottenere risultati simili a quelli ottenuti con il Kalman Filter utilizzando algoritmi basati sulla media mobile esponenziale, che risultano più semplici e veloci da implementare.
+La soluzione più utilizzata allo stato dell'arte per la soluzione di queste problematiche è il Kalman Filter e le sue estensioni \cite{kalman}, ma questo risulta difficile da comprendere e complesso da implementare.
+È stato dimostrato da \cite{laviola} che è possibile ottenere risultati simili a quelli ottenuti con il Kalman Filter utilizzando algoritmi basati sulla media mobile esponenziale, che risultano più semplici e veloci da implementare.
 È importante notare che queste soluzioni ottengono risultati simili al Kalman Filter solamente in alcune situazioni, in particolare quelle in cui la fiducia nelle nostre misure è alta.
 È quindi preferibile utilizzare il Kalman Filter se il costo di implementazione è sostenibile.
-Questa tesi descrive un algoritmo per la correzione del rumore sviluppato dallo studente e lo confronta con quello proposto da \textbf{LaViola2003}.
+Noi abbiamo sviluppato un algoritmo alternativo, che non siamo riusciti a trovare in letteratura, che permette di correggere e simultaneamente calcolare posizione e velocità in modo efficiente.
