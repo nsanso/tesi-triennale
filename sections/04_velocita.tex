@@ -18,9 +18,6 @@ Possiamo quindi provare a correggere il rumore utilizzando una media mobile espo
 dove $k \in [0, 1)$ e $V$ è calcolata come in \ref{eq:vel}.
 Notiamo però che quest'approccio introduce un ritardo tra i valori calcolati e quelli reali (fig \ref{fig:lag}).
 È perciò necessario utilizzare un algoritmo che corregga questo ritardo e allo stesso tempo corregga l'errore in modo simile alla media mobile.
-Mettiamo a confronto due algoritmi: uno sviluppato dallo studente e uno pubblicato in \cite{laviola}.
-Entrambi gli algoritmi lavorano ad intervalli discreti, e suppongono che le osservazioni siano ad intervalli costanti.
-Entrambi correggono la posizione delle entità, e mentre quello dello studente permette di estrarre in contemporanea informazioni relative alla velocità, per ricavare la velocità dall'altro algoritmo è necessario utilizzare l'equazione \ref{eq:vel} e riapplicare l'algoritmo sui risultati.
 
 L'algoritmo sviluppato dallo studente è espresso dalle equazioni in \ref{eq:smoothns}
 \begin{equation}
@@ -75,6 +72,9 @@ Il confronto proposto è eseguito con le seguenti condizioni:
     \item Il percorso reale è generato attraverso una curva di Bezier con estremità $[0, 0], [100, 100]$ e punti di controllo $[0, 100], [100, 0]$
     \item Il numero di intervalli è $100$
 \end{itemize}
+Entrambi gli algoritmi lavorano ad intervalli discreti, e suppongono che le osservazioni siano ad intervalli costanti.
+Entrambi correggono la posizione delle entità, e mentre quello dello studente permette di estrarre in contemporanea informazioni relative alla velocità, per ricavare la velocità dall'altro algoritmo è necessario utilizzare l'equazione \ref{eq:vel} e riapplicare l'algoritmo sui risultati.
+
 \textbf{AGGIUNGI IMMAGINI E TABELLE PER PERCORSO, ERRORE QUADRATO MEDIO POSIZIONE, VELOCITÀ, ERRORE QUADRATO MEDIO VELOCITÀ}
 
 Dai risultati ottenuti si può verificare che l'algoritmo dello studente ottiene risultati almeno comparabili e apparentemente migliori dell'algoritmo di confronto.

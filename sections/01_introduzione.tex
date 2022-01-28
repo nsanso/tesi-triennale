@@ -11,7 +11,7 @@ In particolare risultano necessari i dati relativi a posizione, velocità e cate
 La categoria è importante per differenziare persone, veicoli e oggetti, mentre posizione e velocità sono importanti per comprendere come questi si comportano e interagiscono.
 Possiamo ottenere la categoria delle entità e la loro posizione nell'immagine utilizzando un Object Detector, generalmente implementato con una Convolutional Neural Network \cite{cnn}.
 È necessario poi tracciare le entità tra un frame e l'altro, in modo da poterne misurare gli spostamenti e quindi la velocità.
-Si ottengono buoni risultati con tracker basati su Discriminative Correlation Filters \cite{dcf}
+Si ottengono buoni risultati con tracker basati su Discriminative Correlation Filters \cite{dcf}.
 
 Sia posizione che velocità ottenute in questo modo sono in spazio immagine e non corrispondono con le misure reali.
 Inoltre entrambe presentano errori simili a rumore, derivati dalla precisione non perfetta dell'Object Detection.
