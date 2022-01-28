@@ -19,7 +19,32 @@ dove $k \in [0, 1)$ e $V$ è calcolata come in \ref{eq:vel}.
 Notiamo però che quest'approccio introduce un ritardo tra i valori calcolati e quelli reali (fig \ref{fig:lag}).
 È perciò necessario utilizzare un algoritmo che corregga questo ritardo e allo stesso tempo corregga l'errore in modo simile alla media mobile.
 
-L'algoritmo sviluppato dallo studente è espresso dalle equazioni in \ref{eq:smoothns}
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/pos0.png}
+        \caption{Posizione}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/pos0err.png}
+        \caption{Errore relativo alla posizione}
+    \end{subfigure}
+    \vfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/vel0.png}
+        \caption{Velocità}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.45\textwidth}
+        \includegraphics[width=\textwidth]{images/vel0err.png}
+        \caption{Errore relativo alla velocità}
+    \end{subfigure}
+    \caption{Correggere il rumore utilizzando l'EWMA non restituisce risultati accettabili}
+    \label{fig:lag}
+\end{figure}
+
+L'algoritmo da noi sviluppato è espresso dalle equazioni in \ref{eq:smoothns}
 \begin{equation}
     \label{eq:smoothns}
     \begin{split}
@@ -73,10 +98,96 @@ Il confronto proposto è eseguito con le seguenti condizioni:
     \item Il numero di intervalli è $100$
 \end{itemize}
 Entrambi gli algoritmi lavorano ad intervalli discreti, e suppongono che le osservazioni siano ad intervalli costanti.
-Entrambi correggono la posizione delle entità, e mentre quello dello studente permette di estrarre in contemporanea informazioni relative alla velocità, per ricavare la velocità dall'altro algoritmo è necessario utilizzare l'equazione \ref{eq:vel} e riapplicare l'algoritmo sui risultati.
+Entrambi correggono la posizione delle entità, e mentre il nostro permette di estrarre in contemporanea informazioni relative alla velocità, per ricavare la velocità dall'altro algoritmo è necessario utilizzare l'equazione \ref{eq:vel} e riapplicare l'algoritmo sui risultati.
 
-\textbf{AGGIUNGI IMMAGINI E TABELLE PER PERCORSO, ERRORE QUADRATO MEDIO POSIZIONE, VELOCITÀ, ERRORE QUADRATO MEDIO VELOCITÀ}
+\begin{figure}
+    \centering
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/pos1.png}
+        \caption{Posizione}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/pos1err.png}
+        \caption{Errore relativo alla posizione}
+    \end{subfigure}
+    \caption{Correzione della posizione}
+    \label{fig:corrpos}
+\end{figure}
 
-Dai risultati ottenuti si può verificare che l'algoritmo dello studente ottiene risultati almeno comparabili e apparentemente migliori dell'algoritmo di confronto.
+\begin{table}
+    \caption{Posizione: Errore quadrato medio}
+    \label{tab:peqm}
+    \centering
+    \begin{subtable}{.49\textwidth}
+        \caption{da $t=0$}
+        \centering
+        \begin{tabular}{l r}
+            Rumore &    1.9088 \\
+            EWMA &    105.9955 \\
+            LaViola &   7.2151 \\
+            Nostro &    1.2400 \\
+        \end{tabular}
+    \end{subtable}
+    \hfill
+    \begin{subtable}{.49\textwidth}
+        \caption{ da $t=20$ }
+        \label{tab:peqmb}
+        \centering
+        \begin{tabular}{l r}
+            Rumore &   1.8466 \\
+            EWMA &   100.4374 \\
+            LaViola &  7.1212 \\
+            Nostro &   0.5653 \\
+        \end{tabular}
+    \end{subtable}
+\end{table}
+
+\begin{figure}
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/vel1.png}
+        \caption{Velocità}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}[b]{0.49\textwidth}
+        \includegraphics[width=\textwidth]{images/vel1err.png}
+        \caption{Errore relativo alla velocità}
+    \end{subfigure}
+    \caption{Correzione della velocità}
+    \label{fig:corrvel}
+\end{figure}
+
+\begin{table}
+    \caption{Velocità: Errore quadrato medio}
+    \label{tab:veqm}
+    \centering
+    \begin{subtable}{.49\textwidth}
+        \caption{da $t=0$}
+        \centering
+        \begin{tabular}{l r}
+            Rumore  & 3.7392 \\
+            EWMA    & 0.7734 \\
+            LaViola & 0.3136 \\
+            Nostro  & 0.2941 \\
+        \end{tabular}
+    \end{subtable}
+    \hfill
+    \begin{subtable}{.49\textwidth}
+        \caption{ da $t=20$ }
+        \label{tab:veqmb}
+        \centering
+        \begin{tabular}{l r}
+            Rumore  & 3.7754 \\
+            EWMA    & 0.2837 \\
+            LaViola & 0.0694 \\
+            Nostro  & 0.0284 \\
+        \end{tabular}
+    \end{subtable}
+\end{table}
+
+L'errore indicato nelle tabelle \ref{tab:peqm} e \ref{tab:veqm} è l'errore quadrato assoluto.
+Le alte punte ad inizio esecuzione sono legate all'inizializzazione dei valori dell'algoritmo.
+Se inizializzassimo $v$ e $a$ con valori vicini a $V/2$ e $A/4$ potremmo eliminare gli errori in fase di sincronizzazione e ottenere risultati simili a \ref{tab:peqmb} e \ref{tab:veqmb} sin da inizio esecuzione.
+Dai risultati ottenuti si può verificare che il nostro algoritmo ottiene risultati almeno comparabili e apparentemente migliori dell'algoritmo di confronto.
 Questo ci da la sicurezza di aver sviluppato un algoritmo corretto e utile, ma valutazioni conclusive sulla sua qualità richiedono più test e confronti con algoritmi diversi.
 In particolare sarebbe interessante un confronto con algoritmi basati su Kalman Filter e sue estensioni. 

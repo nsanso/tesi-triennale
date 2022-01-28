@@ -1,7 +1,6 @@
 \chapter{Posizione}
 \label{sec:posizione}
 
-\textbf{TODO: Continua}
 Una camera acquisisce un'immagine catturando la luce proveniente dalla scena in un sensore posto dietro un'apertura, normalmente controllata da un otturatore.
 Per focalizzare i raggi di luce sul sensore è utilizzata una lente.
 Queste lenti introducono una distorsione radiale nell'immagine catturata, che dipende dalla curvatura della lente.
@@ -10,21 +9,21 @@ In alcuni casi tale distorsione è particolarmente intensa, ed è necessario cor
 L'operazione di cattura dell'immagine può quindi essere modellata come proiezione dello spazio reale su un piano immagine, in cui i raggi di luce corrispondono alle linee di proiezione e in cui la camera corrisponde al punto in cui le linee di proiezione convergono.
 Per la correttezza del nostro modello è importante mantenere il rapporto tra lunghezza focale e la dimensione dei pixel, e la posizione dell'immagine rispetto all'asse della camera.
 Non è quindi necessario che la distanza tra immagine e camera nel nostro modello corrisponda a quella tra il sensore e la lente nella realtà, ma può essere scelta in modo da ottenere misure più agevoli per i calcoli.
-Comunemente si utilizza 1 unità come dimensione dei pixel dell'immagine, e la lunghezza focale si esprime in pixel.
+Comunemente la lunghezza focale si esprime in pixel, e si sceglie come dimensione dei pixel 1 unita dello spazio reale.
 Così facendo è possibile utilizzare qualsiasi unità di misura desiderata per la realtà senza dover modificare le coordinate dei punti dell'immagine.
-Un'altra scelta comune per semplificare i calcoli è quella di porre l'origine degli assi delle coordinate al centro dell'immagine, orientare l'asse $x$ con le righe dell'immagine, l'asse $y$ con le colonne, e l'asse $z$ con l'asse ottico della camera, che è la linea che passa tra la camera e il centro dell'immagine.
+Un'altra scelta comune per semplificare i calcoli è quella di porre l'origine degli assi delle coordinate al centro dell'immagine, orientare l'asse $x$ con le righe dell'immagine, l'asse $y$ con le colonne, e l'asse $z$ con l'asse ottico della camera, che è la linea che passa tra la camera e il centro dell'immagine (fig \ref{fig:camera coords}).
+
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{images/camera coords.pdf}
+    \caption{Modello con coordinate}
+    \label{fig:camera coords}
+\end{figure}
 
 Come espresso nella sezione \ref{sec:funzionalita-posizione} a noi interessa solamente ricorstruire ciò che accade sulla strada e ignoriamo il resto della scena.
 Possiamo approssimare la strada con un piano, che chiamiamo piano stradale.
-L'operazione che dobbiamo eseguire per correggere la distorsione prospettica si riduce così dalla proiezione da immagine a spazio reale tridimensionale a una proiezione da immagine a piano bidimensionale (fig \ref{fig:camera coords}).
+L'operazione che dobbiamo eseguire per correggere la distorsione prospettica si riduce così dalla proiezione da immagine a spazio reale tridimensionale a una proiezione da immagine a piano bidimensionale.
 Questa operazione non è lineare in coordinate cartesiane, ma diventa lineare se si utilizzano coordinate proiettive omogenee, ed è quindi possibile definire una matrice lineare di trasformazione.
-
-\begin{figure}
-    \caption{Modello con coordinate}
-    \label{fig:camera coords}
-    \centering
-    \includegraphics[width=\textwidth]{images/camera coords.pdf}
-\end{figure}
 
 È possibile definire tale matrice direttamente, ma è anche possibile definirla come combinazione di trasformazioni.
 Tutte le trasformazioni affini sono componibili in coordinate omogenee, ed abbiamo quindi accesso a traslazione, rotazione e scalatura, a cui aggiungiamo la trasformazione di proiezione.
@@ -75,10 +74,41 @@ Possiamo infatti calcolare le coodinate del piano necessarie per $P$ partendo da
 In questo modo si può trovare una trasformazione soddisfacente, in cui le misure si avvicinano a quelle reali, senza i grandi costi implementativi richiesti dall'implementazione di un metodo automatico per la definizione del piano stradale.
 Una volta definita la matrice di trasformazione il suo utilizzo risulta estremamente efficiente, in quanto si riduce a un prodotto matrice-vettore.
 
+\begin{figure}
+    \centering
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{images/persp1.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{images/persp2.png}
+    \end{subfigure}
+    \caption{Esempio di correzione della distorsione prospettica}
+    \label{fig:projcorrected}
+\end{figure}
+
 L'ultima considerazione necessaria è la scelta del punto a cui applicare la trasformazione trovata.
 Notiamo dall'immagine \ref{fig:TODO} che scegliere il punto centrale del Bounding Box non restituisce il risultato desiderato.
 La strategia migliore è quella di proiettare il lato inferiore del Bounding Box, in quanto questo è l'unico che poggia sul piano stradale.
 Il centro delle entità può poi essere approssimato date le conoscenze relative a dimensioni medie della sua categoria, dalla sua direzione di movimento e dalle caratteristiche del Bounding Box.
 
-In fig \ref{fig:TODO} è presentata una scena annotata dall'Object Detector Scaled-YoloV4 \cite{yolocsp}.
-In fig \ref{fig:TODO} è presentata la stessa scena dopo che è stata eseguita la correzione della distorsione prospettica, in cui la posizione dei veicoli è indicata dal cerchio verde.
+In fig \ref{fig:perspyolo} è presentata una scena annotata dall'Object Detector Scaled-YoloV4 \cite{yolocsp}.
+In fig \ref{fig:perspcorrect} è presentata la stessa scena dopo che è stata eseguita la correzione della distorsione prospettica, in cui la posizione dei veicoli è indicata dal cerchio verde.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{images/yolo.png}
+        \caption{Scaled-YoloV4}
+        \label{fig:perspyolo}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{images/corrected.png}
+        \caption{Distorsione corretta}
+        \label{fig:perspcorrect}
+    \end{subfigure}
+    \caption{Scena prima e dopo la correzione della distorsione prospettica}
+\end{figure}
+
+\textbf{TODO: MANCANO 2 IMMAGINI}
