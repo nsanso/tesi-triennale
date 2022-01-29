@@ -12,14 +12,15 @@ Il sistema da noi sviluppato per monitorare una scena urbana per la rilevazione 
 
 L'utilizzo di un Object Detector (e.g. Yolo \cite{arch:yolo}) permette di completare il punto \ref{itm:1}.
 Il punto \ref{itm:2} è gestito utilizzando algoritmi di tracking, come quelli basati su DCF \cite{dcf}.
-Il punto \ref{itm:4} è svolto utilizzando euristiche sviluppate e validate sperimentalmente che sfuttano le misure ottenute nel punto \ref{itm:3}. 
+Il punto \ref{itm:4} è svolto utilizzando euristiche sviluppate e verificate sperimentalmente che sfuttano le misure ottenute nel punto \ref{itm:3}. 
 Nel punto \ref{itm:5} utilizziamo il protocollo HTTP per inoltrare le anomalie ad un microservizio attivo sullo stesso dispositivo, che gestisce la comunicazione con sistemi esterni.
 Il punto \ref{itm:3} richiede la correzione della distorsione prospettica e del rumore presente nelle misurazioni per essere utile alle euristiche del punto \ref{itm:4}, ed è l'argomento principale di questa tesi.
 
 \section{Posizione}
 \label{sec:funzionalita-posizione}
 Per poter misurare distanze e velocità delle entità è necessario conoscerne la posizione reale.
-La posizione estratta dall'immagine non corrisponde però a quella reale, in quanto presenta una distorsione prospettica legata alle carattestiche e posizione della camera da cui è acquisita.
+La posizione estratta dall'immagine non corrisponde però a quella reale, in quanto presenta una distorsione legata alle carattestiche e posizione della camera da cui è acquisita.
+Chiamiamo questa distorsione \emph{distorsione prospettica}.
 La correzione della distorsione prospettica si divide in due fasi:
 \begin{enumerate}
     \item Comprensione della geometria tridimensionale della scena rappresentata nell'immagine
@@ -38,8 +39,8 @@ Questa tesi studia la costruzione della matrice di proiezione prospettica per in
 Possiamo ricavare la velocità reale delle entità utilizzando le posizioni corrette in precedenza.
 La velocità così misurata risulta caotica, in quanto gli errori di precisione presenti nelle misure di posizione vengono amplificati significativamente.
 È quindi necessario utilizzare un algoritmo di smoothing per correggere questo rumore e rendere utili le nostre misure.
-La soluzione più utilizzata allo stato dell'arte per la soluzione di queste problematiche è il Kalman Filter e le sue estensioni \cite{kalman}, ma questo risulta difficile da comprendere e complesso da implementare.
-È stato dimostrato da \cite{laviola} che è possibile ottenere risultati simili a quelli ottenuti con il Kalman Filter utilizzando algoritmi basati sulla media mobile esponenziale, che risultano più semplici e veloci da implementare.
+La tecnica più utilizzata allo stato dell'arte per la soluzione di queste problematiche è il Kalman Filter e le sue estensioni \cite{kalman}, ma questo risulta difficile da comprendere e complesso da implementare.
+È stato dimostrato da J.LaViola \cite{laviola} che è possibile ottenere risultati simili a quelli ottenuti con il Kalman Filter utilizzando algoritmi basati sulla media mobile esponenziale, che risultano più semplici e veloci da implementare.
 È importante notare che queste soluzioni ottengono risultati simili al Kalman Filter solamente in alcune situazioni, in particolare quelle in cui la fiducia nelle nostre misure è alta.
 È quindi preferibile utilizzare il Kalman Filter se il costo di implementazione è sostenibile.
 Noi abbiamo sviluppato un algoritmo alternativo, che non siamo riusciti a trovare in letteratura, che permette di correggere e simultaneamente calcolare posizione e velocità in modo efficiente.

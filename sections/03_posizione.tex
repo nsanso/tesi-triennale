@@ -4,7 +4,20 @@
 Una camera acquisisce un'immagine catturando la luce proveniente dalla scena in un sensore posto dietro un'apertura, normalmente controllata da un otturatore.
 Per focalizzare i raggi di luce sul sensore è utilizzata una lente.
 Queste lenti introducono una distorsione radiale nell'immagine catturata, che dipende dalla curvatura della lente.
-In alcuni casi tale distorsione è particolarmente intensa, ed è necessario correggerla prima di affrontare la distorsione prospettica, ma nella maggioranza dei casi questa non è notevole e può essere ignorata.
+In alcuni casi tale distorsione è particolarmente intensa, ed è necessario correggerla prima di affrontare la distorsione prospettica, ma nella maggioranza dei casi questa non è significativa e può essere ignorata.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{images/persp1.png}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.49\textwidth}
+        \includegraphics[width=\textwidth]{images/persp2.png}
+    \end{subfigure}
+    \caption{Esempio di correzione della distorsione prospettica}
+    \label{fig:projcorrected}
+\end{figure}
 
 L'operazione di cattura dell'immagine può quindi essere modellata come proiezione dello spazio reale su un piano immagine, in cui i raggi di luce corrispondono alle linee di proiezione e in cui la camera corrisponde al punto in cui le linee di proiezione convergono.
 Per la correttezza del nostro modello è importante mantenere il rapporto tra lunghezza focale e la dimensione dei pixel, e la posizione dell'immagine rispetto all'asse della camera.
@@ -67,7 +80,27 @@ Dove:
     che scarta la coordinata $z$ e ci riporta da 3 dimensioni a 2 dimensioni
 \end{itemize}
 Ricordiamo che le trasformazioni combinano da destra verso sinistra.
-Una rappresentazione visiva della combinazione è in fig \ref{fig:TODO}.
+Una rappresentazione visiva della combinazione è in fig \ref{fig:tcombo}.
+
+\begin{figure}[h]
+    \centering
+    \begin{subfigure}{.32\textwidth}
+        \includegraphics[width=\textwidth]{images/P.png}
+        \caption{$P$}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.32\textwidth}
+        \includegraphics[width=\textwidth]{images/R.png}
+        \caption{$R$}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{.32\textwidth}
+        \includegraphics[width=\textwidth]{images/T.png}
+        \caption{$T$}
+    \end{subfigure}
+    \caption{Trasformazione completa}
+    \label{fig:tcombo}
+\end{figure}
 
 Diventa quindi possibile definire la matrice di correzione della distorsione prospettica in modo interattivo, manipolando la rotazione e la posizione della camera rispetto al piano stradale.
 Possiamo infatti calcolare le coodinate del piano necessarie per $P$ partendo dal piano $[0, 0, 1, 0]$ (è il piano $z=0$) e applicando $R^{-1}$ e $T^{-1T}$ (la traslazione in coordinate proiettive si applica al piano mediante la trasposta della traslazione applicata ai punti).
@@ -76,39 +109,32 @@ Una volta definita la matrice di trasformazione il suo utilizzo risulta estremam
 
 \begin{figure}
     \centering
-    \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=\textwidth]{images/persp1.png}
-    \end{subfigure}
-    \hfill
-    \begin{subfigure}{.49\textwidth}
-        \includegraphics[width=\textwidth]{images/persp2.png}
-    \end{subfigure}
-    \caption{Esempio di correzione della distorsione prospettica}
-    \label{fig:projcorrected}
+    \includegraphics[width=\textwidth]{images/proiez_pos.png}
+    \caption{Proiettare il centro dell'entità non da buoni risultati}
+    \label{fig:proiezcenter}
 \end{figure}
 
 L'ultima considerazione necessaria è la scelta del punto a cui applicare la trasformazione trovata.
-Notiamo dall'immagine \ref{fig:TODO} che scegliere il punto centrale del Bounding Box non restituisce il risultato desiderato.
-La strategia migliore è quella di proiettare il lato inferiore del Bounding Box, in quanto questo è l'unico che poggia sul piano stradale.
+Notiamo dall'immagine \ref{fig:proiezcenter} che scegliere il punto centrale del Bounding Box non restituisce il risultato desiderato.
+Un possibile approccio è quello di proiettare il lato inferiore del Bounding Box, in quanto questo è l'unico che poggia sul piano stradale.
 Il centro delle entità può poi essere approssimato date le conoscenze relative a dimensioni medie della sua categoria, dalla sua direzione di movimento e dalle caratteristiche del Bounding Box.
+Questa soluzione non è perfetta, ma i risultati ottenuti si sono dimostrati accettabili in fase sperimentale.
 
-In fig \ref{fig:perspyolo} è presentata una scena annotata dall'Object Detector Scaled-YoloV4 \cite{yolocsp}.
+In fig \ref{fig:perspbbox} è presentata una scena annotata con Bounding Boxes.
 In fig \ref{fig:perspcorrect} è presentata la stessa scena dopo che è stata eseguita la correzione della distorsione prospettica, in cui la posizione dei veicoli è indicata dal cerchio verde.
 
-\begin{figure}
+\begin{figure}[h]
     \centering
     \begin{subfigure}{.49\textwidth}
         \includegraphics[width=\textwidth]{images/yolo.png}
-        \caption{Scaled-YoloV4}
-        \label{fig:perspyolo}
+        \caption{Bounding Boxes}
+        \label{fig:perspbbox}
     \end{subfigure}
     \hfill
     \begin{subfigure}{.49\textwidth}
         \includegraphics[width=\textwidth]{images/corrected.png}
-        \caption{Distorsione corretta}
+        \caption{Prospettiva corretta}
         \label{fig:perspcorrect}
     \end{subfigure}
     \caption{Scena prima e dopo la correzione della distorsione prospettica}
 \end{figure}
-
-\textbf{TODO: MANCANO 2 IMMAGINI}

@@ -1,7 +1,11 @@
 \chapter{Architettura}
 \label{sec:architettura}
 
-\textbf{TODO: AGGIUNGI IMMAGINE}
+\begin{figure}
+    \centering
+    \includegraphics[width=\textwidth]{images/arch.png}
+    \caption{Architettura del sistema}
+\end{figure}
 
 L'architettura scelta è una pipeline, in quanto l'input del sistema è uno stream video.
 Ogni frame dello stream deve essere processato nello stesso modo, e utilizzare una pipeline consente di aggiungere, rimuovere o sostituire moduli, e quindi modificare il processo, in modo semplice e veloce.
