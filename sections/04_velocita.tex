@@ -123,9 +123,9 @@ Entrambi correggono la posizione delle entità, e mentre il nostro permette di e
         \caption{da $t=0$}
         \centering
         \begin{tabular}{l r}
-            Rumore &    1.9088 \\
-            EWMA &    105.9955 \\
-            LaViola &   7.2151 \\
+            Rumore &    1.5255 \\
+            EWMA &    107.4193 \\
+            LaViola &   5.3685 \\
             Nostro &    1.2400 \\
         \end{tabular}
     \end{subtable}
@@ -135,10 +135,10 @@ Entrambi correggono la posizione delle entità, e mentre il nostro permette di e
         \label{tab:peqmb}
         \centering
         \begin{tabular}{l r}
-            Rumore &   1.8466 \\
-            EWMA &   100.4374 \\
-            LaViola &  7.1212 \\
-            Nostro &   0.5653 \\
+            Rumore &   1.5578 \\
+            EWMA &   100.6619 \\
+            LaViola &  2.3364 \\
+            Nostro &   0.5000 \\
         \end{tabular}
     \end{subtable}
 \end{table}
@@ -165,10 +165,10 @@ Entrambi correggono la posizione delle entità, e mentre il nostro permette di e
         \caption{da $t=0$}
         \centering
         \begin{tabular}{l r}
-            Rumore  & 3.7392 \\
-            EWMA    & 0.7734 \\
-            LaViola & 0.3136 \\
-            Nostro  & 0.2941 \\
+            Rumore  & 3.0807 \\
+            EWMA    & 0.7228 \\
+            LaViola & 0.2980 \\
+            Nostro  & 0.2397 \\
         \end{tabular}
     \end{subtable}
     \hfill
@@ -177,10 +177,10 @@ Entrambi correggono la posizione delle entità, e mentre il nostro permette di e
         \label{tab:veqmb}
         \centering
         \begin{tabular}{l r}
-            Rumore  & 3.7754 \\
-            EWMA    & 0.2837 \\
-            LaViola & 0.0694 \\
-            Nostro  & 0.0284 \\
+            Rumore  & 3.1961 \\
+            EWMA    & 0.2744 \\
+            LaViola & 0.0484 \\
+            Nostro  & 0.0267 \\
         \end{tabular}
     \end{subtable}
 \end{table}
@@ -188,6 +188,6 @@ Entrambi correggono la posizione delle entità, e mentre il nostro permette di e
 L'errore indicato nelle tabelle \ref{tab:peqm} e \ref{tab:veqm} è l'errore quadrato assoluto.
 Le alte punte ad inizio esecuzione sono legate all'inizializzazione dei valori dell'algoritmo.
 Se inizializzassimo $v$ e $a$ con valori migliori potremmo ridurre gli errori in fase di sincronizzazione e ottenere risultati simili a \ref{tab:peqmb} e \ref{tab:veqmb} sin da inizio esecuzione.
-Dai risultati ottenuti si può verificare che il nostro algoritmo ottiene risultati almeno comparabili e apparentemente migliori dell'algoritmo di confronto.
+Dai risultati ottenuti si può verificare che il nostro algoritmo ottiene risultati almeno comparabili a quelli ottenuti dell'algoritmo di confronto.
 Questo ci da la sicurezza di aver sviluppato un algoritmo corretto e utile, ma valutazioni conclusive sulla sua qualità richiedono test più profondi e confronti con algoritmi diversi.
 In particolare sarebbe interessante un confronto con algoritmi basati su Kalman Filter e sue estensioni. 
